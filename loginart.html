@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Artsfellow | Artist Login</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #3F9AAE;
+            --secondary: #184954;
+            --bg: #FDFBF7;
+            --text-main: #1a202c;
+            --text-muted: rgba(26, 32, 44, 0.4);
+            --glass: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(63, 154, 174, 0.1);
+        }
+
+        body.dark-mode {
+            --bg: #0a0c10;
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --glass: rgba(15, 20, 25, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-main);
+            position: fixed;
+            transition: background-color 0.5s ease;
+            perspective: 2000px;
+            /* Custom Hand Brush Cursor */
+            cursor: url('assets/brush-cursor.png') 10 90, auto;
+        }
+
+        /* --- 3D SCENE --- */
+        #scene-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            transform-style: preserve-3d;
+        }
+
+        .obj-3d {
+            position: absolute;
+            width: 25vw;
+            height: 25vw;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            filter: blur(40px);
+            opacity: 0.15;
+            animation: animate3D 20s infinite alternate ease-in-out;
+            box-shadow: 0 0 60px rgba(63, 154, 174, 0.1);
+        }
+
+        body.light-mode .obj-3d {
+            background: linear-gradient(135deg, #1e272e, #0984e3);
+            opacity: 0.35;
+            filter: blur(35px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes animate3D {
+            0% {
+                transform: translate3d(-10vw, -10vh, -400px) rotateX(0deg) rotateY(0deg) scale(0.8);
+            }
+
+            50% {
+                transform: translate3d(20vw, 20vh, 300px) rotateX(180deg) rotateY(180deg) scale(1.4);
+            }
+
+            100% {
+                transform: translate3d(-10vw, -10vh, -400px) rotateX(360deg) rotateY(360deg) scale(0.8);
+            }
+        }
+
+        /* --- FLASH ART (PHOTOS) --- */
+        .flash-art {
+            position: absolute;
+            width: 160px;
+            z-index: 5;
+            opacity: 1 !important;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            animation: float3D 12s infinite ease-in-out;
+            transition: transform 0.5s;
+        }
+
+        /* Responsive scaling for mobile */
+        @media (max-width: 600px) {
+            #scene-3d {
+                z-index: 10;
+            }
+
+            /* Bring art closer to front-background */
+            .app-container {
+                z-index: 20;
+                position: relative;
+            }
+
+            .flash-art {
+                width: 120px !important;
+                opacity: 1 !important;
+                filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.5));
+                visibility: visible !important;
+                display: block !important;
+                /* Force show all for debugging or curated below */
+            }
+
+            /* Curated Theme Art for Mobile */
+            body.light-mode .flash-art.dark-best {
+                display: none !important;
+            }
+
+            body.dark-mode .flash-art.light-best {
+                display: none !important;
+            }
+
+            /* Position Adjustments to ensure they aren't hidden behind the card */
+            .flash-art:nth-child(1) {
+                top: 2% !important;
+                left: 2% !important;
+            }
+
+            .flash-art:nth-child(2) {
+                top: 5% !important;
+                right: 2% !important;
+            }
+
+            .flash-art:nth-child(3) {
+                bottom: 5% !important;
+                left: 2% !important;
+            }
+
+            .brand h1 {
+                font-size: 34px;
+                margin-top: 10px;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+                margin: 0 10px;
+                border-radius: 40px;
+            }
+        }
+
+        @keyframes float3D {
+
+            0%,
+            100% {
+                transform: translateZ(50px) rotateY(-5deg) rotateX(5deg);
+            }
+
+            50% {
+                transform: translateZ(150px) rotateY(10deg) rotateX(-5deg) translateY(-20px);
+            }
+        }
+
+        /* Removed Tool Icons for cleaner look */
+
+        .welcome-text {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            opacity: 0.1;
+            z-index: 3;
+            letter-spacing: 6px;
+            white-space: nowrap;
+            animation: welcomeFloat 25s infinite linear;
+        }
+
+        @keyframes welcomeFloat {
+            0% {
+                transform: translate3d(80vw, 20vh, -400px) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.15;
+            }
+
+            90% {
+                opacity: 0.15;
+            }
+
+            100% {
+                transform: translate3d(-80vw, 80vh, 100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Ambient Paint Drops */
+        .ambient-drop {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.1;
+            pointer-events: none;
+            animation: drift 15s infinite linear;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translateY(110vh) scale(1);
+            }
+
+            to {
+                transform: translateY(-10vh) scale(1.5);
+            }
+        }
+
+        /* --- UI COMPONENTS --- */
+        .app-container {
+            position: relative;
+            z-index: 20;
+            width: 100%;
+            height: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 0;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.04);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateZ(200px);
+        }
+
+        .brand h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-main), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 14px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        body.dark-mode .input-box input {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-mode .input-box input {
+            background: #f1f5f9;
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-continue {
+            width: 100%;
+            margin: 20px auto 0;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: var(--primary);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            color: inherit;
+        }
+
+        /* --- Paint Splatter (Chita) --- */
+        .splatter {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 1000;
+            filter: blur(1px);
+        }
+
+        .splatter-anim {
+            animation: splatterMove 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes splatterMove {
+            0% {
+                transform: scale(0) translate(0, 0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.2) translate(var(--tx), var(--ty));
+                opacity: 0;
+            }
+        }
+
+        #paint-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .paint-drop {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 100;
+        }
+
+        .expanding-drop {
+            animation: expandDrop 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes expandDrop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1000);
+                border-radius: 0;
+                background: var(--text-main);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px) translateZ(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) translateZ(200px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+    <button class="theme-toggle" id="theme-toggle"><i data-lucide="moon" size="20"></i></button>
+
+    <div id="scene-3d">
+        <!-- Background Artistic 3D Objects -->
+        <div class="obj-3d" style="top: -10%; left: -10%; animation-delay: 0s;"></div>
+        <div class="obj-3d"
+            style="bottom: -5%; right: -5%; animation-delay: -10s; width: 45vw; height: 45vw; border-radius: 50% 10% 50% 10%;">
+        </div>
+        <div class="obj-3d"
+            style="top: 30%; left: 30%; animation-delay: -20s; width: 25vw; height: 25vw; opacity: 0.3;"></div>
+        <div class="obj-3d"
+            style="top: 50%; right: 20%; width: 60vw; height: 10vw; border-radius: 100px; animation-duration: 40s; opacity: 0.2;">
+        </div>
+
+        <!-- Artistic Gallery (Photos) -->
+        <img src="assets/flash4.png" class="flash-art light-best" style="top: 15%; left: 10%; width: 140px;">
+        <img src="assets/flash7.png" class="flash-art light-best" style="top: 40%; right: 10%; width: 130px;">
+        <img src="assets/flash1.png" class="flash-art light-best" style="bottom: 15%; left: 15%; width: 150px;">
+
+        <img src="assets/flash5.png" class="flash-art dark-best" style="top: 15%; right: 15%; width: 160px;">
+        <img src="assets/flash2.png" class="flash-art dark-best" style="top: 40%; left: 10%; width: 150px;">
+        <img src="assets/flash3.png" class="flash-art dark-best" style="bottom: 15%; right: 15%; width: 140px;">
+
+        <!-- Welcoming Words -->
+        <div class="welcome-text" style="top: 25%;">CREATIVITY IS FREEDOM</div>
+        <div class="welcome-text" style="top: 70%; animation-delay: -10s;">WELCOME TO THE STUDIO</div>
+    </div>
+
+    <div id="paint-overlay"></div>
+
+    <!-- Top Left Corner Logo (Full Branding) -->
+    <div style="position: fixed; top: 25px; left: 30px; z-index: 1000; display: flex; align-items: center; gap: 14px;">
+        <div
+            style="width: 42px; height: 42px; background: white; border: 1px solid rgba(63, 154, 174, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.03);">
+            <svg viewBox="0 0 100 100" style="width: 28px; height: 28px;">
+                <path d="M20 50 C20 25 45 15 65 20 C85 25 85 55 65 75 C45 95 20 85 20 50 Z" fill="white"
+                    stroke="#3F9AAE" stroke-width="3" />
+                <circle cx="35" cy="40" r="4" fill="#FF5252" />
+                <circle cx="50" cy="35" r="4" fill="#4CAF50" />
+                <circle cx="55" cy="55" r="4" fill="#FFC107" />
+                <circle cx="35" cy="65" r="6" fill="#FDFBF7" stroke="#3F9AAE" stroke-width="2" />
+                <path d="M45 80 L85 25" stroke="#1a202c" stroke-width="6" stroke-linecap="round" />
+                <path d="M85 25 L92 15" stroke="#3F9AAE" stroke-width="8" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div
+            style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 900; letter-spacing: -0.5px; display: flex; align-items: baseline;">
+            <span style="color: #3F9AAE;">AR</span><span style="color: #FF5252;">T</span><span
+                style="color: #FFC107; font-size: 18px;">s</span><span style="color: #1a202c;">Fellow</span>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <div style="text-align: center; margin-bottom: 25px;">
+            <div
+                style="width: 50px; height: 50px; margin: 0 auto 12px; background: white; border: 1px solid rgba(63, 154, 174, 0.1); border-radius: 18px; display: flex; align-items: center; justify-content: center; transform: rotate(-5deg); box-shadow: 0 10px 20px rgba(0,0,0,0.02);">
+                <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
+                    <path d="M20 50 C20 25 45 15 65 20 C85 25 85 55 65 75 C45 95 20 85 20 50 Z" fill="white"
+                        stroke="#3F9AAE" stroke-width="3" />
+                    <circle cx="35" cy="40" r="4" fill="#FF5252" />
+                    <circle cx="50" cy="35" r="4" fill="#4CAF50" />
+                    <circle cx="55" cy="55" r="4" fill="#FFC107" />
+                    <circle cx="35" cy="65" r="6" fill="#FDFBF7" stroke="#3F9AAE" stroke-width="2" />
+                    <path d="M45 80 L85 25" stroke="#1a202c" stroke-width="6" stroke-linecap="round" />
+                    <path d="M85 25 L92 15" stroke="#3F9AAE" stroke-width="8" stroke-linecap="round" />
+                </svg>
+            </div>
+            <h1 class="brand"
+                style="font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 900; display: flex; align-items: baseline; justify-content: center; margin-top: 5px;">
+                <span style="color: #3F9AAE;">AR</span><span style="color: #FF5252;">T</span><span
+                    style="color: #FFC107; font-size: 28px;">s</span><span style="color: #1a202c;">Fellow</span>
+            </h1>
+        </div>
+
+        <div class="login-card">
+            <div class="form-group">
+                <label class="label">ARTIST ID</label>
+                <div class="input-box"><input type="text" placeholder="your@art.com"></div>
+            </div>
+            <div class="form-group">
+                <label class="label">PASSCODE</label>
+                <div class="input-box"><input type="password" placeholder="••••••••"></div>
+            </div>
+            <button class="btn-continue" id="continue-btn">CONTINUE THINKING <i data-lucide="chevron-right"
+                    size="18"></i></button>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <div
+                    style="flex: 1; height: 44px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="instagram" size="18"></i>
+                </div>
+                <div
+                    style="flex: 1; height: 44px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="twitter" size="18"></i>
+                </div>
+                <div
+                    style="flex: 1; height: 44px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                    <i data-lucide="github" size="18"></i>
+                </div>
+            </div>
+            <p
+                style="text-align: center; margin-top: 20px; font-size: 11px; color: var(--text-muted); font-weight: 600;">
+                NEW CREATOR? <span style="color: var(--primary); font-weight: 700;">JOIN STUDIO</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Generate Ambient Background Particles
+        function createAmbientParticles() {
+            const container = document.getElementById('scene-3d');
+            for (let i = 0; i < 15; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'ambient-drop';
+                const size = Math.random() * 40 + 10;
+                drop.style.width = size + 'px';
+                drop.style.height = size + 'px';
+                drop.style.left = Math.random() * 100 + 'vw';
+                drop.style.top = Math.random() * 100 + 'vh';
+                drop.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                drop.style.animationDelay = (Math.random() * -20) + 's';
+                container.appendChild(drop);
+            }
+        }
+        createAmbientParticles();
+        lucide.createIcons();
+
+        const btn = document.getElementById('continue-btn');
+        const overlay = document.getElementById('paint-overlay');
+
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('filling')) return;
+            btn.classList.add('filling');
+            const rect = btn.getBoundingClientRect();
+            const color = Math.random() > 0.5 ? '#00e091' : '#0061e0';
+
+            // Generate Splash Splatters (Chita)
+            for (let i = 0; i < 20; i++) {
+                const s = document.createElement('div');
+                s.className = 'splatter splatter-anim';
+                const size = Math.random() * 20 + 5;
+                s.style.width = size + 'px';
+                s.style.height = (size * (Math.random() + 0.5)) + 'px'; // Irregular shapes
+                s.style.left = (rect.left + rect.width / 2) + 'px';
+                s.style.top = (rect.top + rect.height / 2) + 'px';
+                s.style.background = color;
+                s.style.setProperty('--tx', (Math.random() - 0.5) * 400 + 'px');
+                s.style.setProperty('--ty', (Math.random() - 0.5) * 400 + 'px');
+                s.style.borderRadius = `${Math.random() * 50 + 50}% ${Math.random() * 50 + 50}% ${Math.random() * 50 + 50}% ${Math.random() * 50 + 50}%`;
+                document.body.appendChild(s);
+                setTimeout(() => s.remove(), 800);
+            }
+
+            setTimeout(() => {
+                const drop = document.createElement('div');
+                drop.className = 'paint-drop expanding-drop';
+                drop.style.left = (rect.left + rect.width / 2) + 'px';
+                drop.style.top = (rect.top + rect.height / 2) + 'px';
+                drop.style.background = color;
+                overlay.appendChild(drop);
+                setTimeout(() => location.reload(), 1500);
+            }, 600);
+        });
+
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeBtn.innerHTML = isLight ? '<i data-lucide="sun" size="20"></i>' : '<i data-lucide="moon" size="20"></i>';
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>
