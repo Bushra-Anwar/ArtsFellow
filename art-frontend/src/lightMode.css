@@ -1,0 +1,585 @@
+/*
+ * ==============================================================
+ *  ArtsFellow — LIGHT MODE STYLES (All Internal Pages)
+ *
+ *  ⚡ Applied globally via main.tsx → affects ALL pages.
+ *  ✅ Uses :root:not(.dark) to fire ONLY in light mode.
+ *  🚫 Landing page has its own styling — unaffected.
+ * ==============================================================
+ */
+
+/* ─── ROOT LIGHT MODE VARIABLES ──────────────────────────────── */
+:root:not(.dark) {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-card: #ffffffee;
+  --bg-card-hover: #f1f5f9;
+  --bg-input: #f8fafc;
+
+  --text-primary: #0f172a;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --text-on-primary: #ffffff;
+
+  --primary: #008080;
+  --primary-hover: #006666;
+  --secondary: #004d4d;
+
+  --color-primary: #008080;
+  --color-primary-dark: #006666;
+  --color-secondary: #004d4d;
+  --color-accent: #e0f2f1;
+  --card-bg: #ffffffcc;
+
+  --border-color: rgba(0, 128, 128, 0.12);
+  --border-focus: rgba(0, 128, 128, 0.5);
+
+  --glass: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 128, 128, 0.12);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-primary: 0 4px 20px rgba(0, 128, 128, 0.15);
+
+  /* Background blob colors — matching the reference photo */
+  --blob-cyan-start: #a5f3fc;
+  --blob-cyan-end: #22d3ee;
+  --blob-blue-start: #bae6fd;
+  --blob-blue-end: #38bdf8;
+  --blob-mint-start: #ccfbf1;
+  --blob-mint-end: #5eead4;
+}
+
+/* ─── BODY ────────────────────────────────────────────────────── */
+:root:not(.dark) body {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+:root:not(.dark) h1,
+:root:not(.dark) h2,
+:root:not(.dark) h3,
+:root:not(.dark) h4,
+:root:not(.dark) h5,
+:root:not(.dark) h6 {
+  color: var(--text-main);
+}
+
+:root:not(.dark) p,
+:root:not(.dark) li {
+  color: var(--text-primary);
+}
+
+/* ─── NAVBAR ─────────────────────────────────────────────────── */
+:root:not(.dark) nav {
+  background-color: rgba(255, 255, 255, 0.97) !important;
+  border-bottom: 1px solid rgba(0, 128, 128, 0.12) !important;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* All nav link text must be CLEARLY visible */
+:root:not(.dark) nav a,
+:root:not(.dark) nav button {
+  color: #1e293b;
+}
+
+:root:not(.dark) nav a:hover,
+:root:not(.dark) nav button:hover {
+  color: var(--color-primary);
+}
+
+/* Mobile drawer */
+:root:not(.dark) nav [class*="sidebar"],
+:root:not(.dark) [class*="Drawer"],
+:root:not(.dark) [class*="drawer"] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* ─── LOGO & BRAND ───────────────────────────────────────────── */
+/* Ensure logo SVG uses correct variables in light mode */
+:root:not(.dark) {
+  --primary: #008080;
+  --secondary: #006666;
+}
+
+/* ─── CHAT WIDGET BUTTON ─────────────────────────────────────── */
+/* Chat floating button is always teal, stays visible in both modes */
+:root:not(.dark) button[class*="fixed"][class*="bottom-6"],
+:root:not(.dark) button[class*="fixed"][class*="rounded-full"] {
+  background-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 20px rgba(0, 128, 128, 0.35) !important;
+}
+
+/* ─── PAGE BACKGROUNDS (transparent — blob shows through) ─────── */
+:root:not(.dark) .page-wrapper,
+:root:not(.dark) main,
+:root:not(.dark) [class*="min-h-screen"] {
+  background-color: transparent !important;
+}
+
+/* ─── CARDS ──────────────────────────────────────────────────── */
+/* Make sure ALL card-like elements in light mode have a clean look */
+:root:not(.dark) [class*="rounded-"][class*="shadow"],
+:root:not(.dark) [class*="rounded-"][class*="border"] {
+  background-color: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(0, 128, 128, 0.1);
+  color: #0f172a;
+}
+
+/* Artwork / product cards */
+:root:not(.dark) [class*="bg-white"] {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* Explicit text fix for card content in light mode */
+:root:not(.dark) [class*="bg-white"] h3,
+:root:not(.dark) [class*="bg-white"] h4,
+:root:not(.dark) [class*="bg-white"] h5 {
+  color: #0f172a;
+}
+
+:root:not(.dark) [class*="bg-white"] p {
+  color: #64748b;
+}
+
+/* Dark bg overrides for light mode — background only */
+:root:not(.dark) [class*="bg-\[var\(--card-bg\)\]"],
+:root:not(.dark) [class*="bg-\[#153a45\]"] {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* ─── INPUTS & FORMS ─────────────────────────────────────────── */
+:root:not(.dark) input,
+:root:not(.dark) textarea,
+:root:not(.dark) select {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(0, 128, 128, 0.2);
+}
+
+:root:not(.dark) input:focus,
+:root:not(.dark) textarea:focus,
+:root:not(.dark) select:focus {
+  border-color: rgba(0, 128, 128, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.08);
+  outline: none;
+}
+
+:root:not(.dark) input::placeholder,
+:root:not(.dark) textarea::placeholder {
+  color: #94a3b8;
+}
+
+:root:not(.dark) label {
+  color: #64748b;
+}
+
+:root:not(.dark) select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* ─── FILTER BARS / SEARCH BARS ──────────────────────────────── */
+:root:not(.dark) [class*="bg-white dark:bg"] {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(0, 128, 128, 0.1) !important;
+}
+
+/* ─── MODALS & DIALOGS ───────────────────────────────────────── */
+:root:not(.dark) [role="dialog"],
+:root:not(.dark) [class*="modal"],
+:root:not(.dark) [class*="Modal"] {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Backdrop */
+:root:not(.dark) [class*="backdrop"],
+:root:not(.dark) [class*="overlay"] {
+  background-color: rgba(15, 23, 42, 0.4);
+}
+
+/* ─── TABLES ─────────────────────────────────────────────────── */
+:root:not(.dark) table {
+  background-color: rgba(255, 255, 255, 0.88);
+  color: #0f172a;
+}
+
+:root:not(.dark) th {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border-bottom-color: rgba(0, 128, 128, 0.1);
+}
+
+:root:not(.dark) tr:hover {
+  background-color: rgba(0, 128, 128, 0.03);
+}
+
+/* ─── SUMMARY / ORDER BOX ────────────────────────────────────── */
+:root:not(.dark) .text-gray-500 {
+  color: #64748b !important;
+}
+
+:root:not(.dark) .text-gray-800 {
+  color: #1e293b !important;
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────────── */
+:root:not(.dark) ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 6px;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #008080;
+}
+
+/* ─── GLASS PANELS ───────────────────────────────────────────── */
+:root:not(.dark) .glass-panel {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(0, 128, 128, 0.1) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─── DIVIDERS ───────────────────────────────────────────────── */
+:root:not(.dark) hr {
+  border-color: rgba(0, 128, 128, 0.1);
+}
+
+/* ─── BADGES ─────────────────────────────────────────────────── */
+:root:not(.dark) [class*="uppercase"][class*="tracking-wider"] {
+  color: var(--color-primary);
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
+
+/* Blob float for global background blobs */
+@keyframes blob-float {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(40px, -60px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-30px, 30px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob-float 20s infinite alternate ease-in-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Fade in from bottom */
+@keyframes light-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.light-fade-in {
+  animation: light-fade-in 0.5s ease forwards;
+}
+
+/* ─── BODY ────────────────────────────────────────────────────── */
+:root:not(.dark) body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────── */
+:root:not(.dark) h1,
+:root:not(.dark) h2,
+:root:not(.dark) h3,
+:root:not(.dark) h4,
+:root:not(.dark) h5,
+:root:not(.dark) h6 {
+  color: var(--text-main);
+}
+
+:root:not(.dark) p,
+:root:not(.dark) span,
+:root:not(.dark) li {
+  color: var(--text-primary);
+}
+
+/* ─── CARDS ──────────────────────────────────────────────────── */
+:root:not(.dark) .card,
+:root:not(.dark) [class*="card"],
+:root:not(.dark) [class*="Card"] {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+}
+
+/* ─── INPUTS & FORMS ─────────────────────────────────────────── */
+:root:not(.dark) input,
+:root:not(.dark) textarea,
+:root:not(.dark) select {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root:not(.dark) input:focus,
+:root:not(.dark) textarea:focus,
+:root:not(.dark) select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.1);
+  outline: none;
+}
+
+:root:not(.dark) input::placeholder,
+:root:not(.dark) textarea::placeholder {
+  color: var(--text-subtle);
+}
+
+:root:not(.dark) label {
+  color: var(--text-muted);
+}
+
+/* ─── BUTTONS ───────────────────────────────────────────────── */
+:root:not(.dark) button[class*="primary"],
+:root:not(.dark) .btn-primary {
+  background-color: var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-primary);
+}
+
+:root:not(.dark) button[class*="primary"]:hover,
+:root:not(.dark) .btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+:root:not(.dark) button[class*="outline"],
+:root:not(.dark) .btn-outline {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ─── NAVBAR ─────────────────────────────────────────────────── */
+:root:not(.dark) nav,
+:root:not(.dark) header {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-bottom-color: var(--border-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  box-shadow: 0 1px 0 var(--border-color);
+}
+
+:root:not(.dark) nav a,
+:root:not(.dark) header a {
+  color: var(--text-primary);
+}
+
+:root:not(.dark) nav a:hover,
+:root:not(.dark) header a:hover {
+  color: var(--primary);
+}
+
+/* ─── SIDEBAR ────────────────────────────────────────────────── */
+:root:not(.dark) aside,
+:root:not(.dark) [class*="sidebar"],
+:root:not(.dark) [class*="Sidebar"] {
+  background-color: var(--bg-secondary);
+  border-right-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* ─── MODALS & DIALOGS ───────────────────────────────────────── */
+:root:not(.dark) [class*="modal"],
+:root:not(.dark) [class*="Modal"],
+:root:not(.dark) [role="dialog"] {
+  background-color: #ffffff;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Backdrop */
+:root:not(.dark) [class*="backdrop"],
+:root:not(.dark) [class*="overlay"] {
+  background-color: rgba(15, 23, 42, 0.5);
+}
+
+/* ─── BADGES & TAGS ──────────────────────────────────────────── */
+:root:not(.dark) [class*="badge"],
+:root:not(.dark) [class*="Badge"],
+:root:not(.dark) [class*="tag"],
+:root:not(.dark) [class*="Tag"] {
+  background-color: var(--color-accent);
+  color: var(--primary);
+  border-color: rgba(0, 128, 128, 0.12);
+}
+
+/* ─── TABLES ─────────────────────────────────────────────────── */
+:root:not(.dark) table {
+  background-color: #ffffff;
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+:root:not(.dark) th {
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+  border-bottom-color: var(--border-color);
+}
+
+:root:not(.dark) tr:hover {
+  background-color: var(--bg-card-hover);
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────────── */
+:root:not(.dark) ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 6px;
+}
+
+:root:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ─── GLASS PANELS ───────────────────────────────────────────── */
+:root:not(.dark) .glass-panel {
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 128, 128, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─── DIVIDERS & BORDERS ─────────────────────────────────────── */
+:root:not(.dark) hr,
+:root:not(.dark) .divider {
+  border-color: var(--border-color);
+}
+
+/* ─── SPECIFIC PAGE OVERRIDES ────────────────────────────────── */
+
+/* Explore / Artists / Wishlist / Cart → page containers */
+:root:not(.dark) [class*="page-container"],
+:root:not(.dark) .page-wrapper,
+:root:not(.dark) main {
+  background-color: transparent;
+  /* Let the blob background show */
+  color: var(--text-primary);
+}
+
+/* Artwork cards */
+:root:not(.dark) [class*="artwork"],
+:root:not(.dark) [class*="Artwork"] {
+  color: var(--text-primary);
+}
+
+/* Price labels */
+:root:not(.dark) [class*="price"],
+:root:not(.dark) [class*="Price"] {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Teal accent text */
+:root:not(.dark) [class*="accent"],
+:root:not(.dark) .text-teal,
+:root:not(.dark) .text-primary-color {
+  color: var(--primary);
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
+
+/* Blob float for background */
+@keyframes blob-float {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+
+  33% {
+    transform: translate(40px, -60px) scale(1.1);
+  }
+
+  66% {
+    transform: translate(-30px, 30px) scale(0.9);
+  }
+
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+/* Fade in from bottom */
+@keyframes light-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shine sweep for cards on hover */
+@keyframes shine-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(200%);
+  }
+}
+
+.light-fade-in {
+  animation: light-fade-in 0.5s ease forwards;
+}

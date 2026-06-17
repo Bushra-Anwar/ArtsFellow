@@ -1,0 +1,319 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EXPLORE PAGE — Premium Discovery Design
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.explore-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 100px 40px 40px;
+  background: #f9fafb;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+.dark .explore-page {
+  background: #050912;
+  color: #f8fafc;
+}
+
+/* ─── SIDE WAVES ─── */
+.explore-wave {
+  position: absolute;
+  width: 500px;
+  height: 350px;
+  filter: blur(80px);
+  opacity: 0.5;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.explore-wave.left {
+  left: -220px;
+  top: 35%;
+  background: radial-gradient(circle, #0a2e2e, transparent);
+  animation: explore-wave-float 8s ease-in-out infinite;
+}
+
+.explore-wave.right {
+  right: -220px;
+  top: 35%;
+  background: radial-gradient(circle, #d4af37, transparent);
+  animation: explore-wave-float 10s ease-in-out infinite reverse;
+}
+
+.dark .explore-wave.left {
+  background: radial-gradient(circle, #0f2027, transparent);
+  opacity: 0.7;
+}
+
+.dark .explore-wave.right {
+  background: radial-gradient(circle, #b8860b, transparent);
+  opacity: 0.6;
+}
+
+@keyframes explore-wave-float {
+
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+
+  50% {
+    transform: translateY(-35px) scale(1.05);
+  }
+}
+
+/* ─── HEADER SECTION ─── */
+.explore-header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.explore-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.2rem;
+  color: #0f172a;
+}
+
+.dark .explore-title {
+  color: #f8fafc;
+}
+
+.explore-title span {
+  background: linear-gradient(90deg, #008080, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── SEARCH ─── */
+.explore-search-wrapper {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+}
+
+.explore-search {
+  width: 100%;
+  padding: 14px 24px;
+  padding-right: 50px;
+  border-radius: 50px;
+  border: 1px solid rgba(0, 128, 128, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.06);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  color: #0f172a;
+}
+
+.dark .explore-search {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.25);
+}
+
+.explore-search:focus {
+  border-color: #008080;
+  box-shadow: 0 14px 40px rgba(0, 128, 128, 0.15);
+}
+
+.explore-search-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #008080, #06b6d4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ─── FILTERS ─── */
+.explore-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+}
+
+.explore-filter-chip {
+  padding: 8px 20px;
+  border-radius: 25px;
+  background: rgba(241, 245, 249, 0.9);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  transition: all 0.25s ease;
+}
+
+.dark .explore-filter-chip {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.explore-filter-chip:hover {
+  background: rgba(0, 128, 128, 0.08);
+  color: #008080;
+}
+
+.explore-filter-chip.active {
+  background: linear-gradient(135deg, #008080, #06b6d4);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 0 22px rgba(0, 128, 128, 0.3);
+}
+
+/* ─── WAVE SLIDER (Explore Carousel) ─── */
+.explore-slider-viewport {
+  position: relative;
+  z-index: 10;
+  width: 100vw;
+  margin-left: -40px;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  margin-top: 2rem;
+}
+
+.explore-slider-track {
+  display: flex;
+  gap: 24px;
+  padding: 30px 0;
+  width: max-content;
+}
+
+/* ─── EXPLORE CARDS ─── */
+.explore-card {
+  min-width: 240px;
+  height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dark .explore-card {
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.4);
+}
+
+.explore-card:hover {
+  box-shadow: 0 30px 60px rgba(0, 128, 128, 0.18);
+}
+
+.explore-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.explore-card:hover img {
+  transform: scale(1.08);
+}
+
+.explore-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.explore-card:hover .explore-card-overlay {
+  opacity: 1;
+}
+
+.explore-card-overlay h4 {
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+}
+
+.explore-card-overlay p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* ─── MASONRY GRID (Below Slider) ─── */
+.explore-masonry {
+  position: relative;
+  z-index: 10;
+  column-gap: 1.5rem;
+  columns: 1;
+  margin-top: 3rem;
+}
+
+@media (min-width: 640px) {
+  .explore-masonry {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .explore-masonry {
+    columns: 3;
+  }
+}
+
+@media (min-width: 1400px) {
+  .explore-masonry {
+    columns: 4;
+  }
+}
+
+.explore-masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .explore-page {
+    padding: 90px 20px 20px;
+  }
+
+  .explore-wave {
+    width: 300px;
+    height: 200px;
+    opacity: 0.3;
+  }
+
+  .explore-slider-viewport {
+    margin-left: -20px;
+  }
+
+  .explore-card {
+    min-width: 200px;
+    height: 260px;
+  }
+}

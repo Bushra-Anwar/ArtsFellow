@@ -1,0 +1,294 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO — ArtsFellow Landing Page
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
+
+/* ─── MAIN CONTAINER ─── */
+.hero-main {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(155deg, #0a1628 0%, #0d2b2b 30%, #0a1c1c 55%, #141414 100%);
+  color: #f8fafc;
+  transition: background 0.6s ease, color 0.6s ease;
+}
+
+/* Light mode */
+.hero-main:not(.dark) {
+  background: linear-gradient(155deg, #f0f7ff 0%, #e8f5f0 30%, #fdfcfa 55%, #f5f0eb 100%);
+  color: #0f172a;
+}
+
+/* ─── WATERMARK TEXT ─── */
+.hero-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 900;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.015);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+.hero-main:not(.dark) .hero-watermark {
+  color: rgba(0, 0, 0, 0.03);
+}
+
+.hero-watermark-bottom {
+  top: auto;
+  bottom: 4%;
+  transform: translateX(-50%);
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.04);
+}
+
+.hero-main:not(.dark) .hero-watermark-bottom {
+  color: rgba(0, 0, 0, 0.04);
+}
+
+/* ─── DIAGONAL BEAMS ─── */
+.hero-beam {
+  position: absolute;
+  width: 300px;
+  height: 120%;
+  background: linear-gradient(180deg, transparent, rgba(13, 148, 136, 0.06), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-beam-left {
+  left: 18%;
+  top: -10%;
+  transform: rotate(-25deg);
+}
+
+.hero-beam-right {
+  right: 18%;
+  top: -10%;
+  transform: rotate(25deg);
+}
+
+.hero-main:not(.dark) .hero-beam {
+  background: linear-gradient(180deg, transparent, rgba(13, 148, 136, 0.08), transparent);
+}
+
+/* ─── SIDE ARTWORK CARDS ─── */
+.hero-art-side {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.hero-art-left { left: 0; }
+.hero-art-right { right: 0; }
+
+.hero-float-card {
+  position: absolute;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35), 0 8px 20px rgba(0, 0, 0, 0.2);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: box-shadow 0.4s ease;
+  background: #111;
+}
+
+.hero-main:not(.dark) .hero-float-card {
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.hero-float-card:hover {
+  box-shadow: 0 30px 80px rgba(13, 148, 136, 0.25), 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-float-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+/* ─── CENTER CONTENT ─── */
+.hero-center {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  max-width: 700px;
+  padding: 0 20px;
+}
+
+.hero-center-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* Badge line */
+.hero-badge-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0d9488;
+  opacity: 0.6;
+}
+
+.hero-badge-text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-main:not(.dark) .hero-badge-text {
+  color: rgba(15, 23, 42, 0.45);
+}
+
+/* Title */
+.hero-main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.2rem, 8vw, 6.5rem);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+.hero-title-accent {
+  background: linear-gradient(135deg, #0d9488, #06b6d4, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtitle */
+.hero-subtitle {
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  line-height: 1.7;
+  max-width: 500px;
+  opacity: 0.55;
+  margin: 0;
+}
+
+/* CTA Buttons */
+.hero-cta-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.hero-btn-primary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.hero-main:not(.dark) .hero-btn-primary {
+  background: rgba(15, 23, 42, 0.9);
+  color: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.95);
+}
+
+.hero-btn-primary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 40px rgba(13, 148, 136, 0.2);
+}
+
+.hero-main:not(.dark) .hero-btn-primary:hover {
+  background: rgba(15, 23, 42, 1);
+}
+
+.hero-btn-secondary {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hero-main:not(.dark) .hero-btn-secondary {
+  background: transparent;
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+}
+
+.hero-btn-secondary:hover {
+  border-color: rgba(13, 148, 136, 0.4);
+  color: #2dd4bf;
+}
+
+.hero-main:not(.dark) .hero-btn-secondary:hover {
+  border-color: #0d9488;
+  color: #0d9488;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1200px) {
+  .hero-art-side {
+    width: 18%;
+  }
+  .hero-float-card {
+    transform: scale(0.85);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-art-side {
+    display: none;
+  }
+  .hero-main-title {
+    font-size: clamp(2.8rem, 12vw, 4.5rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-cta-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
