@@ -17,7 +17,7 @@ async function getBotResponse(input: string): Promise<string> {
     }
 
     const llm = new ChatGoogleGenerativeAI({
-      modelName: "gemini-2.5-flash",
+      model: "gemini-2.5-flash",
       apiKey: process.env.GEMINI_API_KEY,
     });
 
