@@ -20,8 +20,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { artCategories } from "../constants/artCategories";
-import Logo from "../components/Logo";
-import PaintStainsBackground from "../components/PaintStainsBackground";
+import Logo from '../components/Logo';
+import PaintStainsBackground from '../components/PaintStainsBackground';
 
 interface ArtworkEntry {
   title: string;
@@ -243,10 +243,42 @@ const ArtistRegistration: React.FC = () => {
     }
   };
 
+  const PaintBlobs = () => (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <motion.div
+        animate={{
+          scale: [1, 1.1, 1],
+          x: [0, 30, 0],
+          y: [0, 20, 0],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-24 -left-24 w-[450px] h-[450px] bg-[var(--color-primary)]/10 rounded-full blur-[100px]"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          x: [0, -40, 0],
+          y: [0, 50, 0],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+        className="absolute top-1/4 -right-32 w-[600px] h-[600px] bg-[#FFC107]/5 rounded-full blur-[120px]"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.15, 1],
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+        }}
+        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+        className="absolute -bottom-48 left-10 w-[500px] h-[500px] bg-[#FF5252]/5 rounded-full blur-[130px]"
+      />
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-[#fcfcfc] dark:bg-[#070a0f] relative py-20 px-4 md:px-12 selection:bg-[var(--color-primary)] selection:text-white flex flex-col font-sans transition-colors duration-500">
+    <div className="min-h-screen bg-[#fcfcfc] dark:bg-[#070a0f] relative overflow-hidden pt-12 pb-20 px-4 font-['Outfit'] transition-colors duration-500">
       <PaintStainsBackground opacity={0.3} interactive={false} />
-      <div className="max-w-5xl mx-auto relative z-10 w-full">
+      <div className="max-w-5xl mx-auto relative z-10">
         {/* Branding Top */}
         <div className="flex justify-center mb-12">
           <div className="bg-white/40 dark:bg-white/5 backdrop-blur-md p-4 rounded-3xl shadow-sm border border-white/20">
@@ -275,11 +307,10 @@ const ArtistRegistration: React.FC = () => {
           {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
-              className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all shadow-lg ${
-                step >= i
+              className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all shadow-lg ${step >= i
                   ? "bg-[var(--color-primary)] text-white scale-110 shadow-[var(--color-primary)]/20"
                   : "bg-white dark:bg-[#041a1a] border-2 border-slate-200 dark:border-[var(--color-primary)]/30 text-slate-400 dark:text-slate-300"
-              }`}
+                }`}
             >
               {step > i ? <CheckCircle size={20} /> : i}
             </div>
