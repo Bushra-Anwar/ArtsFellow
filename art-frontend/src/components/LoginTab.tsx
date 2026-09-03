@@ -331,7 +331,8 @@ const LoginTab: React.FC = () => {
 
             <motion.div
               key="login-modal"
-              className={`absolute right-0 sm:right-10 top-full mt-4 backdrop-blur-2xl border border-[var(--glass-border)] shadow-[0_24px_54px_-12px_rgba(0,0,0,0.2)] z-50 origin-top-right overflow-hidden transition-all duration-300 ${user ? "w-[280px] bg-[var(--bg-primary)] rounded-tl-[3rem] rounded-bl-[3rem] rounded-br-[3rem] rounded-tr-[6px]" : "w-[360px] bg-[var(--bg-primary)] rounded-[2rem]"}`}
+              className={`absolute right-0 sm:right-10 top-full mt-4 backdrop-blur-2xl border border-[var(--glass-border)] shadow-[0_24px_54px_-12px_rgba(0,0,0,0.2)] z-50 origin-top-right overflow-hidden transition-all duration-300 ${user ? "w-[280px] bg-[var(--bg-primary)] rounded-tl-[3rem] rounded-bl-[3rem] rounded-br-[3rem] rounded-tr-[6px]" : "w-[320px] max-w-[95vw] sm:w-[360px] bg-[var(--bg-primary)] rounded-[2rem]"}`}
+
               initial={{
                 opacity: 0,
                 scale: 0.8,

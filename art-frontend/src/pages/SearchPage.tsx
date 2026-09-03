@@ -911,7 +911,7 @@ const SearchPage: React.FC = () => {
               ))}
             </div>
 
-            <div className="grid lg:grid-cols-[1fr_450px] xl:grid-cols-[1fr_600px] h-[600px]">
+            <div className="grid lg:grid-cols-[1fr_450px] xl:grid-cols-[1fr_600px] min-h-[800px] lg:h-[600px] lg:min-h-0">
               {/* Left Side: Exhibition Cards List */}
               <div className="overflow-y-auto p-6 md:p-10 space-y-6">
 

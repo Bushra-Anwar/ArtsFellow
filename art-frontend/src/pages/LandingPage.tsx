@@ -355,7 +355,7 @@ const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="text-6xl md:text-8xl lg:text-[100px] font-serif font-black tracking-tighter text-[#0a1628] dark:text-white leading-[1.0] mb-8 drop-shadow-2xl"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-[90px] xl:text-[100px] font-serif font-black tracking-tighter text-[#0a1628] dark:text-white leading-[1.1] md:leading-[1.0] mb-6 md:mb-8 drop-shadow-2xl px-2"
           >
             DISCOVER & BUY <br />
             <span className="text-teal-700 dark:text-teal-400">ORIGINAL ART</span>

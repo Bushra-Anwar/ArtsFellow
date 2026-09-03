@@ -227,7 +227,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Actions & Menu */}
-          <div className="md:hidden flex items-center gap-3">
+          <div className="md:hidden flex items-center gap-1 sm:gap-3">
             {(role !== "admin" && role !== "artist") && (
               <Link
                 to="/wishlist"
@@ -241,7 +241,7 @@ const Navbar: React.FC = () => {
                     );
                   }
                 }}
-                className="p-2 text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors relative"
+                className="p-1 sm:p-2 text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors relative"
               >
                 <Heart size={20} />
               </Link>
@@ -260,7 +260,7 @@ const Navbar: React.FC = () => {
                     );
                   }
                 }}
-                className="p-2 relative text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors"
+                className="p-1 sm:p-2 relative text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors"
               >
                 <ShoppingBag size={20} />
                 {cartCount > 0 && (
@@ -279,7 +279,7 @@ const Navbar: React.FC = () => {
             {/* Hamburger Button */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors"
+              className="p-1 sm:p-2 text-gray-700 dark:text-gray-200 hover:bg-white dark:hover:bg-gray-800 rounded-full transition-colors"
             >
               <Menu size={24} />
             </button>
