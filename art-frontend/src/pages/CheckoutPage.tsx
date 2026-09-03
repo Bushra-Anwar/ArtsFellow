@@ -167,10 +167,10 @@ const CheckoutPage: React.FC = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Step 1: Address */}
           <div
-            className={`p-6 rounded-2xl border transition-all ${step === 1 ? "bg-white dark:bg-white border-[var(--color-primary)] shadow-lg" : "bg-gray-50 dark:bg-gray-50 border-gray-200 dark:border-gray-200 text-slate-900 dark:text-slate-900"}`}
+            className={`p-6 rounded-2xl border transition-all ${step === 1 ? "bg-white dark:bg-white border-[var(--color-primary)] shadow-lg" : "bg-gray-50 dark:bg-gray-50 border-gray-200 dark:border-gray-200 text-slate-900 dark:text-white"}`}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-slate-900">
+              <h3 className="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-white">
                 <span className="w-8 h-8 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-sm">
                   1
                 </span>
@@ -199,7 +199,7 @@ const CheckoutPage: React.FC = () => {
                       size={20}
                     />
                     <div>
-                      <p className="font-bold text-slate-900 dark:text-slate-900">{addr.name || "Home"}</p>
+                      <p className="font-bold text-slate-900 dark:text-white">{addr.name || "Home"}</p>
                       <p className="text-sm opacity-80 text-slate-700 dark:text-slate-700">
                         {addr.street}, {addr.city}, {addr.state} -{" "}
                         {addr.pincode}
@@ -297,10 +297,10 @@ const CheckoutPage: React.FC = () => {
 
           {/* Step 2: Payment */}
           <div
-            className={`p-6 rounded-2xl border transition-all ${step === 2 ? "bg-white dark:bg-white border-[var(--color-primary)] shadow-lg" : "bg-gray-50 dark:bg-gray-50 border-gray-200 dark:border-gray-200 text-slate-900 dark:text-slate-900"}`}
+            className={`p-6 rounded-2xl border transition-all ${step === 2 ? "bg-white dark:bg-white border-[var(--color-primary)] shadow-lg" : "bg-gray-50 dark:bg-gray-50 border-gray-200 dark:border-gray-200 text-slate-900 dark:text-white"}`}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-slate-900">
+              <h3 className="text-xl font-bold flex items-center gap-2 text-slate-900 dark:text-white">
                 <span className="w-8 h-8 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-sm">
                   2
                 </span>
@@ -449,7 +449,7 @@ const CheckoutPage: React.FC = () => {
 
         {/* Right Column: Order Summary */}
         <div className="bg-white dark:bg-white p-6 rounded-2xl h-fit border border-gray-200 dark:border-gray-200 shadow-sm sticky top-24">
-          <h3 className="font-bold text-xl mb-4 text-slate-900 dark:text-slate-900">Order Summary</h3>
+          <h3 className="font-bold text-xl mb-4 text-slate-900 dark:text-white">Order Summary</h3>
           <div className="space-y-4 mb-6">
             {cartItems.map((item) => (
               <div key={item._id} className="flex gap-3">
@@ -458,7 +458,7 @@ const CheckoutPage: React.FC = () => {
                   className="w-16 h-16 rounded-lg object-cover bg-gray-100"
                 />
                 <div>
-                  <p className="font-bold text-sm line-clamp-2 text-slate-900 dark:text-slate-900">{item.title}</p>
+                  <p className="font-bold text-sm line-clamp-2 text-slate-900 dark:text-white">{item.title}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-500">{item.artistName}</p>
                   <p className="text-sm font-bold text-[var(--color-primary)]">
                     ₹{item.price.toLocaleString()}
@@ -470,13 +470,13 @@ const CheckoutPage: React.FC = () => {
           <div className="border-t border-gray-100 dark:border-slate-700 pt-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500 dark:text-gray-500">Subtotal</span>
-              <span className="font-medium text-slate-900 dark:text-slate-900">₹{total.toLocaleString()}</span>
+              <span className="font-medium text-slate-900 dark:text-white">₹{total.toLocaleString()}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Shipping</span>
               <span className="font-medium text-green-500">Free</span>
             </div>
-            <div className="flex justify-between text-lg font-bold pt-2 border-t border-dashed border-gray-200 dark:border-gray-200 mt-2 text-slate-900 dark:text-slate-900">
+            <div className="flex justify-between text-lg font-bold pt-2 border-t border-dashed border-gray-200 dark:border-gray-200 mt-2 text-slate-900 dark:text-white">
               <span>Total</span>
               <span>₹{total.toLocaleString()}</span>
             </div>
@@ -486,7 +486,7 @@ const CheckoutPage: React.FC = () => {
 
       <style>{`
                 .input-field {
-                    @apply w-full px-4 py-3 rounded-xl bg-white dark:bg-white border border-gray-200 dark:border-gray-300 focus:border-[var(--color-primary)] outline-none text-slate-900 dark:text-slate-900 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-400;
+                    @apply w-full px-4 py-3 rounded-xl bg-white dark:bg-white border border-gray-200 dark:border-gray-300 focus:border-[var(--color-primary)] outline-none text-slate-900 dark:text-white transition-all placeholder:text-gray-400 dark:placeholder:text-gray-400;
                 }
             `}</style>
     </div>

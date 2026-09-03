@@ -509,7 +509,7 @@ const ProfilePage = () => {
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--color-primary)] to-purple-400 opacity-5 rounded-full blur-3xl rounded-full -translate-y-1/2 translate-x-1/2" />
 
             <div className="border-b border-gray-100 dark:border-slate-800 pb-5 mb-6">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-900 flex items-center gap-2 relative z-10">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2 relative z-10">
                 <Package className="text-[var(--color-primary)]" size={24} />
                 My Purchases Dashboard
               </h2>
@@ -523,7 +523,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-500 font-bold uppercase mb-1">
                   Total Ordered
                 </p>
-                <p className="text-3xl font-black text-slate-900 dark:text-slate-900">
+                <p className="text-3xl font-black text-slate-900 dark:text-white">
                   {orders.reduce((acc, curr) => acc + curr.items.length, 0)}{" "}
                   <span className="text-sm text-[var(--text-muted)] font-normal">
                     items
@@ -534,7 +534,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-500 font-bold uppercase mb-1">
                   Total Spent
                 </p>
-                <p className="text-2xl font-black text-slate-900 dark:text-slate-900 truncate mt-2">
+                <p className="text-2xl font-black text-slate-900 dark:text-white truncate mt-2">
                   ₹
                   {orders
                     .reduce((acc, curr) => acc + curr.totalAmount, 0)
@@ -545,7 +545,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-500 font-bold uppercase mb-1">
                   Orders Count
                 </p>
-                <p className="text-3xl font-black text-slate-900 dark:text-slate-900 mt-2">
+                <p className="text-3xl font-black text-slate-900 dark:text-white mt-2">
                   {orders.length}
                 </p>
               </div>
@@ -553,7 +553,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-500 font-bold uppercase mb-1">
                   Wishlist
                 </p>
-                <p className="text-3xl font-black text-slate-900 dark:text-slate-900 mt-2">
+                <p className="text-3xl font-black text-slate-900 dark:text-white mt-2">
                   {user.wishlist?.length || 0}
                 </p>
               </div>
@@ -561,7 +561,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-500 font-bold uppercase mb-1">
                   Ratings Given
                 </p>
-                <p className="text-3xl font-black text-slate-900 dark:text-slate-900 mt-2">
+                <p className="text-3xl font-black text-slate-900 dark:text-white mt-2">
                   {ratedArtCount}
                 </p>
               </div>
@@ -569,7 +569,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-gray-500 font-bold uppercase mb-1">
                   Latest Order
                 </p>
-                <p className="text-lg font-bold text-slate-900 dark:text-slate-900 mt-4 truncate">
+                <p className="text-lg font-bold text-slate-900 dark:text-white mt-4 truncate">
                   {orders.length > 0
                     ? new Date(orders[0].createdAt).toLocaleDateString()
                     : "N/A"}
@@ -598,7 +598,7 @@ const ProfilePage = () => {
                           />
                         </div>
                         <div>
-                          <p className="font-bold text-sm text-slate-900 dark:text-slate-900">
+                          <p className="font-bold text-sm text-slate-900 dark:text-white">
                             {ord.items[0]?.title}{" "}
                             {ord.items.length > 1
                               ? `+ ${ord.items.length - 1} more`
@@ -614,7 +614,7 @@ const ProfilePage = () => {
                           </p>
                         </div>
                       </div>
-                      <p className="font-bold text-slate-900 dark:text-slate-900">
+                      <p className="font-bold text-slate-900 dark:text-white">
                         ₹{ord.totalAmount.toLocaleString()}
                       </p>
                     </div>
@@ -676,7 +676,7 @@ const ProfilePage = () => {
                       )}
                     </div>
                     <div className="overflow-hidden">
-                      <h3 className="font-bold text-lg text-slate-900 dark:text-slate-900 group-hover:text-[var(--color-primary)] transition-colors truncate">
+                      <h3 className="font-bold text-lg text-slate-900 dark:text-white group-hover:text-[var(--color-primary)] transition-colors truncate">
                         {artist.brandName || artist.name}
                       </h3>
                       <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5 uppercase tracking-widest font-black truncate">

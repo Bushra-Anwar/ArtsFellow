@@ -106,7 +106,7 @@ const CartPage: React.FC = () => {
                       <div>
                         <Link
                           to={`/art/${item._id}`}
-                          className="font-black text-2xl text-slate-900 dark:text-slate-900 hover:text-[var(--color-primary)] transition-colors tracking-tight"
+                          className="font-black text-2xl text-slate-900 dark:text-white hover:text-[var(--color-primary)] transition-colors tracking-tight"
                         >
                           {item.title}
                         </Link>
@@ -129,7 +129,7 @@ const CartPage: React.FC = () => {
                         <span className="text-xs font-black text-gray-500 uppercase tracking-widest">
                           Artwork
                         </span>
-                        <span className="text-lg font-black text-slate-900 dark:text-slate-900">
+                        <span className="text-lg font-black text-slate-900 dark:text-white">
                           1 Unit
                         </span>
                       </div>
@@ -159,14 +159,14 @@ const CartPage: React.FC = () => {
           {/* Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-white backdrop-blur-2xl p-10 rounded-[3.5rem] shadow-2xl border border-[var(--color-primary)]/10 sticky top-28">
-              <h3 className="text-3xl font-serif-magic italic mb-8 text-slate-900 dark:text-slate-900 tracking-tight text-center">
+              <h3 className="text-3xl font-serif-magic italic mb-8 text-slate-900 dark:text-white tracking-tight text-center">
                 Summary
               </h3>
 
               <div className="space-y-4 mb-8">
                 <div className="flex justify-between text-gray-500 font-bold">
                   <span>Subtotal</span>
-                  <span className="text-slate-900 dark:text-slate-900">
+                  <span className="text-slate-900 dark:text-white">
                     ₹{cartTotal.toLocaleString()}
                   </span>
                 </div>
@@ -177,7 +177,7 @@ const CartPage: React.FC = () => {
                   </span>
                 </div>
                 <div className="h-px bg-gray-200 dark:bg-gray-200 my-6" />
-                <div className="flex justify-between text-3xl font-black text-slate-900 dark:text-slate-900 tracking-tighter">
+                <div className="flex justify-between text-3xl font-black text-slate-900 dark:text-white tracking-tighter">
                   <span>Total</span>
                   <span className="text-[var(--color-primary)]">
                     ₹{cartTotal.toLocaleString()}

@@ -954,7 +954,7 @@ const SearchPage: React.FC = () => {
                           )}
                         </div>
                         <div className="flex items-center gap-2 mt-auto">
-                          <button onClick={() => window.open(ex.link || "https://in.bookmyshow.com", "_blank")} className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-[var(--color-primary)] dark:hover:bg-[var(--color-primary)] dark:hover:text-white transition-all shadow-md">
+                          <button onClick={() => window.open(ex.link || "https://in.bookmyshow.com", "_blank")} className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-white text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-[var(--color-primary)] dark:hover:bg-[var(--color-primary)] dark:hover:text-white transition-all shadow-md">
                             {ex.tickets?.includes('Free') ? 'Visit Website' : 'Book Tickets'}
                           </button>
                           <button

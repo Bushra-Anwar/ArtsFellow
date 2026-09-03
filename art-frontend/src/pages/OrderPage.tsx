@@ -136,7 +136,7 @@ const OrderPage: React.FC = () => {
               className={`bg-white dark:bg-white p-6 rounded-2xl shadow-sm border ${step === 1 ? "border-[var(--color-primary)] ring-1 ring-[var(--color-primary)]/20" : "border-gray-200 dark:border-gray-200"}`}
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900 dark:text-slate-900">
+                <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900 dark:text-white">
                   <span
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${step >= 1 ? "bg-[var(--color-primary)] text-white" : "bg-gray-100 dark:bg-gray-100 text-gray-500"}`}
                   >
@@ -173,7 +173,7 @@ const OrderPage: React.FC = () => {
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <p className="font-bold text-slate-900 dark:text-slate-900">
+                              <p className="font-bold text-slate-900 dark:text-white">
                                 {addr.name}
                               </p>
                               <span className="text-xs bg-gray-200 dark:bg-gray-200 px-2 py-0.5 rounded text-gray-500">
@@ -220,7 +220,7 @@ const OrderPage: React.FC = () => {
                       >
                         <div className="bg-white dark:bg-white p-5 rounded-xl border border-gray-200 dark:border-gray-200 space-y-4">
                           <div className="flex justify-between items-center mb-2">
-                            <h4 className="font-bold text-slate-900 dark:text-slate-900">
+                            <h4 className="font-bold text-slate-900 dark:text-white">
                               Add New Address
                             </h4>
                             <button
@@ -245,7 +245,7 @@ const OrderPage: React.FC = () => {
                                     name: e.target.value,
                                   })
                                 }
-                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-slate-900 outline-none focus:border-[var(--color-primary)] ${addrErrors.name ? "border-red-500" : ""}`}
+                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)] ${addrErrors.name ? "border-red-500" : ""}`}
                               />
                               {addrErrors.name && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -266,7 +266,7 @@ const OrderPage: React.FC = () => {
                                     phone: e.target.value,
                                   })
                                 }
-                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-slate-900 outline-none focus:border-[var(--color-primary)] ${addrErrors.phone ? "border-red-500" : ""}`}
+                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)] ${addrErrors.phone ? "border-red-500" : ""}`}
                               />
                               {addrErrors.phone && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -287,7 +287,7 @@ const OrderPage: React.FC = () => {
                                     street: e.target.value,
                                   })
                                 }
-                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-slate-900 outline-none focus:border-[var(--color-primary)] ${addrErrors.street ? "border-red-500" : ""}`}
+                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)] ${addrErrors.street ? "border-red-500" : ""}`}
                               />
                               {addrErrors.street && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -308,7 +308,7 @@ const OrderPage: React.FC = () => {
                                     city: e.target.value,
                                   })
                                 }
-                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-slate-900 outline-none focus:border-[var(--color-primary)] ${addrErrors.city ? "border-red-500" : ""}`}
+                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)] ${addrErrors.city ? "border-red-500" : ""}`}
                               />
                               {addrErrors.city && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -329,7 +329,7 @@ const OrderPage: React.FC = () => {
                                     state: e.target.value,
                                   })
                                 }
-                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-slate-900 outline-none focus:border-[var(--color-primary)] ${addrErrors.state ? "border-red-500" : ""}`}
+                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)] ${addrErrors.state ? "border-red-500" : ""}`}
                               />
                               {addrErrors.state && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -350,7 +350,7 @@ const OrderPage: React.FC = () => {
                                     pincode: e.target.value,
                                   })
                                 }
-                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-slate-900 outline-none focus:border-[var(--color-primary)] ${addrErrors.pincode ? "border-red-500" : ""}`}
+                                className={`w-full p-2 rounded-lg border bg-white dark:bg-white border-gray-200 dark:border-gray-300 text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)] ${addrErrors.pincode ? "border-red-500" : ""}`}
                               />
                               {addrErrors.pincode && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -407,7 +407,7 @@ const OrderPage: React.FC = () => {
               className={`bg-white dark:bg-white p-6 rounded-2xl shadow-sm border ${step === 2 ? "border-[var(--color-primary)] ring-1 ring-[var(--color-primary)]/20" : "border-gray-200 dark:border-gray-200"}`}
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900 dark:text-slate-900">
+                <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900 dark:text-white">
                   <span
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm ${step >= 2 ? "bg-[var(--color-primary)] text-white" : "bg-gray-100 dark:bg-gray-100 text-gray-500"}`}
                   >
@@ -440,18 +440,18 @@ const OrderPage: React.FC = () => {
                         <input
                           type="text"
                           placeholder="Card Number"
-                          className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-slate-900 border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
+                          className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-white border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
                         />
                         <div className="grid grid-cols-2 gap-4">
                           <input
                             type="text"
                             placeholder="MM/YY"
-                            className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-slate-900 border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
+                            className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-white border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
                           />
                           <input
                             type="password"
                             placeholder="CVV"
-                            className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-slate-900 border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
+                            className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-white border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
                           />
                         </div>
                       </>
@@ -460,7 +460,7 @@ const OrderPage: React.FC = () => {
                         <input
                           type="text"
                           placeholder="Enter UPI ID (e.g. mobile@ybl)"
-                          className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-slate-900 border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
+                          className="w-full p-3 bg-white dark:bg-white border text-slate-900 dark:text-white border-gray-200 dark:border-gray-300 rounded-lg outline-none focus:border-[var(--color-primary)]"
                         />
                         <p className="text-xs text-gray-500 text-center mt-2">Supports Google Pay, PhonePe, Paytm, and other UPI Apps</p>
                       </>
@@ -484,12 +484,12 @@ const OrderPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white dark:bg-white p-6 rounded-2xl shadow-xl border border-[var(--color-primary)] text-center"
               >
-                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-slate-900">
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">
                   Confirm Purchase
                 </h3>
                 <p className="text-gray-500 mb-6">
                   Total Amount:{" "}
-                  <span className="font-bold text-slate-900 dark:text-slate-900">
+                  <span className="font-bold text-slate-900 dark:text-white">
                     ${cartTotal.toLocaleString()}
                   </span>
                 </p>
@@ -522,8 +522,8 @@ const OrderPage: React.FC = () => {
                 </p>
                 <div className="flex justify-center gap-4">
                   <button
-                    onClick={() => navigate("/order")}
-                    className="px-6 py-2 bg-white dark:bg-[var(--card-bg)] rounded-lg font-bold shadow-sm text-sm"
+                    onClick={() => navigate("/orders")}
+                    className="px-6 py-2 bg-white dark:bg-[var(--card-bg)] rounded-lg font-bold shadow-sm text-sm text-slate-900 dark:text-white"
                   >
                     Track Order
                   </button>
@@ -542,7 +542,7 @@ const OrderPage: React.FC = () => {
           {step < 4 && (
             <div className="md:col-span-1">
               <div className="bg-white dark:bg-white p-6 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-200 sticky top-28">
-                <h3 className="font-bold text-lg mb-4 text-slate-900 dark:text-slate-900">
+                <h3 className="font-bold text-lg mb-4 text-slate-900 dark:text-white">
                   Order Summary
                 </h3>
                 {cart.map((item, idx) => (
@@ -563,7 +563,7 @@ const OrderPage: React.FC = () => {
                     <div>
                       <Link
                         to={`/art/${item._id}`}
-                        className="font-bold text-slate-900 dark:text-slate-900 line-clamp-1 hover:text-[var(--color-primary)] transition-colors"
+                        className="font-bold text-slate-900 dark:text-white line-clamp-1 hover:text-[var(--color-primary)] transition-colors"
                       >
                         {item.title}
                       </Link>
@@ -583,7 +583,7 @@ const OrderPage: React.FC = () => {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-gray-500">
                     <span>Subtotal</span>
-                    <span className="text-slate-900 dark:text-slate-900">${cartTotal.toLocaleString()}</span>
+                    <span className="text-slate-900 dark:text-white">${cartTotal.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
                     <span>Shipping</span>
@@ -591,9 +591,9 @@ const OrderPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-gray-500">
                     <span>Taxes</span>
-                    <span className="text-slate-900 dark:text-slate-900">$0.00</span>
+                    <span className="text-slate-900 dark:text-white">$0.00</span>
                   </div>
-                  <div className="border-t border-gray-200 dark:border-gray-200 pt-3 flex justify-between font-bold text-lg text-slate-900 dark:text-slate-900">
+                  <div className="border-t border-gray-200 dark:border-gray-200 pt-3 flex justify-between font-bold text-lg text-slate-900 dark:text-white">
                     <span>Total</span>
                     <span>${cartTotal.toLocaleString()}</span>
                   </div>
