@@ -320,7 +320,7 @@ const ArtistRegistration: React.FC = () => {
         {/* Main Card Container */}
         <div className="bg-[#FCFAF7] dark:bg-[var(--card-bg)] dark:border-[var(--glass-border)] rounded-[50px] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-white/50 p-10 md:p-16 transition-all min-h-[600px] flex flex-col relative overflow-hidden backdrop-blur-sm">
           {/* Visual Border Accent */}
-          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[var(--color-primary)]/40 via-[#FF5252]/40 to-[#FFC107]/40" />
+          <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[var(--color-primary)]/40 via-cyan-500/40 to-emerald-500/40" />
 
           <AnimatePresence mode="wait">
             {/* Step 1: Account Creation */}
