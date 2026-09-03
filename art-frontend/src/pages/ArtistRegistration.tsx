@@ -280,7 +280,7 @@ const ArtistRegistration: React.FC = () => {
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Branding Top */}
         <div className="flex justify-center mb-12">
-          <div className="bg-white/40 backdrop-blur-md p-4 rounded-3xl shadow-sm border border-white/20">
+          <div className="bg-white/40 dark:bg-white/5 backdrop-blur-md p-4 rounded-3xl shadow-sm border border-white/20">
             <Logo className="h-8" />
           </div>
         </div>
@@ -290,7 +290,7 @@ const ArtistRegistration: React.FC = () => {
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-black text-[#1a202c] dark:text-white uppercase tracking-[-0.04em] mb-4"
+            className="text-5xl md:text-7xl font-black text-[#1a202c] dark:text-white dark:text-white uppercase tracking-[-0.04em] mb-4"
           >
             ARTIST{" "}
             <span className="text-[var(--color-primary)]">REGISTRATION</span>
@@ -309,7 +309,7 @@ const ArtistRegistration: React.FC = () => {
               className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all shadow-lg ${
                 step >= i
                   ? "bg-[var(--color-primary)] text-white scale-110 shadow-[var(--color-primary)]/20"
-                  : "bg-white border-2 border-slate-200 text-slate-400"
+                  : "bg-white dark:bg-[#041a1a] border-2 border-slate-200 dark:border-[var(--color-primary)]/30 text-slate-400 dark:text-slate-300"
               }`}
             >
               {step > i ? <CheckCircle size={20} /> : i}
@@ -318,7 +318,7 @@ const ArtistRegistration: React.FC = () => {
         </div>
 
         {/* Main Card Container */}
-        <div className="bg-[#FCFAF7] rounded-[50px] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-white/50 p-10 md:p-16 transition-all min-h-[600px] flex flex-col relative overflow-hidden backdrop-blur-sm">
+        <div className="bg-[#FCFAF7] dark:bg-[var(--card-bg)] dark:border-[var(--glass-border)] rounded-[50px] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-white/50 p-10 md:p-16 transition-all min-h-[600px] flex flex-col relative overflow-hidden backdrop-blur-sm">
           {/* Visual Border Accent */}
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[var(--color-primary)]/40 via-[#FF5252]/40 to-[#FFC107]/40" />
 
@@ -342,7 +342,7 @@ const ArtistRegistration: React.FC = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <h2 className="text-4xl font-black text-[#1a202c] dark:text-white tracking-tight">
+                    <h2 className="text-4xl font-black text-[#1a202c] dark:text-white dark:text-white tracking-tight">
                       Create Your Studio
                     </h2>
                     <p className="text-[var(--text-muted)] font-medium text-lg leading-relaxed">
@@ -353,12 +353,12 @@ const ArtistRegistration: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2 text-left">
-                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">
+                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-300 ml-1 tracking-widest">
                       Full Name
                     </label>
                     <input
                       type="text"
-                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm font-medium"
+                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white dark:text-white transition-all text-sm font-medium"
                       placeholder="Enter your full legal name"
                       value={formData.fullName}
                       onChange={(e) =>
@@ -367,12 +367,12 @@ const ArtistRegistration: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-2 text-left">
-                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">
+                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-300 ml-1 tracking-widest">
                       Email Address
                     </label>
                     <input
                       type="email"
-                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm font-medium"
+                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white dark:text-white transition-all text-sm font-medium"
                       placeholder="you@example.com"
                       value={formData.email}
                       onChange={(e) =>
@@ -381,12 +381,12 @@ const ArtistRegistration: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-2 text-left">
-                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">
+                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-300 ml-1 tracking-widest">
                       Mobile Number
                     </label>
                     <input
                       type="tel"
-                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm font-medium"
+                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white dark:text-white transition-all text-sm font-medium"
                       placeholder="+91 XXXXX XXXXX"
                       value={formData.phone}
                       onChange={(e) =>
@@ -395,12 +395,12 @@ const ArtistRegistration: React.FC = () => {
                     />
                   </div>
                   <div className="space-y-2 text-left">
-                    <label className="text-[10px] font-black uppercase text-slate-400 ml-1 tracking-widest">
+                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-300 ml-1 tracking-widest">
                       Create Password
                     </label>
                     <input
                       type="password"
-                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm font-medium"
+                      className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-[#1a202c] dark:text-white dark:text-white dark:text-white transition-all text-sm font-medium"
                       placeholder="Min. 6 characters"
                       value={formData.password}
                       onChange={(e) =>
@@ -425,7 +425,7 @@ const ArtistRegistration: React.FC = () => {
                         <input
                           type="text"
                           maxLength={6}
-                          className="w-full pl-16 pr-6 py-5 rounded-2xl bg-white border-none shadow-xl shadow-[var(--color-primary)]/5 focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-3xl font-black text-center tracking-[0.8rem] text-[#1a202c] dark:text-white"
+                          className="w-full pl-16 pr-6 py-5 rounded-2xl bg-white border-none shadow-xl shadow-[var(--color-primary)]/5 focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none text-3xl font-black text-center tracking-[0.8rem] text-[#1a202c] dark:text-white dark:text-white"
                           value={otp}
                           onChange={(e) => setOtp(e.target.value)}
                           placeholder="000000"
@@ -447,7 +447,7 @@ const ArtistRegistration: React.FC = () => {
                 className="space-y-8 flex-1"
               >
                 <div className="space-y-2">
-                  <h2 className="text-3xl font-black text-[#1a202c] dark:text-white flex items-center gap-2">
+                  <h2 className="text-3xl font-black text-[#1a202c] dark:text-white dark:text-white flex items-center gap-2">
                     <User className="text-[var(--color-primary)]" />
                     Artist Profile
                   </h2>
@@ -494,7 +494,7 @@ const ArtistRegistration: React.FC = () => {
                         <input
                           type="text"
                           placeholder="e.g. Studio DaVinci"
-                          className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm"
+                          className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white dark:text-white dark:text-white transition-all text-sm"
                           value={formData.brandName}
                           onChange={(e) =>
                             setFormData({
@@ -509,7 +509,7 @@ const ArtistRegistration: React.FC = () => {
                           Art Category
                         </label>
                         <select
-                          className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white transition-all text-sm appearance-none"
+                          className="w-full p-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm appearance-none"
                           value={formData.category}
                           onChange={(e) =>
                             setFormData({
@@ -540,7 +540,7 @@ const ArtistRegistration: React.FC = () => {
                           <input
                             type="text"
                             placeholder="City, Country"
-                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white transition-all text-sm"
+                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm"
                             value={formData.location}
                             onChange={(e) =>
                               setFormData({
@@ -563,7 +563,7 @@ const ArtistRegistration: React.FC = () => {
                           <input
                             type="text"
                             placeholder="e.g. 5 Years"
-                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white transition-all text-sm"
+                            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm"
                             value={formData.experience}
                             onChange={(e) =>
                               setFormData({
@@ -582,7 +582,7 @@ const ArtistRegistration: React.FC = () => {
                       <textarea
                         rows={4}
                         placeholder="Tell collectors about your style, inspiration, and background..."
-                        className="w-full p-4 rounded-3xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white transition-all text-sm resize-none"
+                        className="w-full p-4 rounded-3xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-[#1a202c] dark:text-white dark:text-white transition-all text-sm resize-none"
                         value={formData.bio}
                         onChange={(e) =>
                           setFormData({ ...formData, bio: e.target.value })
@@ -604,7 +604,7 @@ const ArtistRegistration: React.FC = () => {
                 className="space-y-8 flex-1"
               >
                 <div className="space-y-2">
-                  <h2 className="text-3xl font-black text-[#1a202c] dark:text-white flex items-center gap-2">
+                  <h2 className="text-3xl font-black text-[#1a202c] dark:text-white dark:text-white flex items-center gap-2">
                     <ImageIcon className="text-[var(--color-primary)]" />
                     Showcase Portfolio
                   </h2>
@@ -660,7 +660,7 @@ const ArtistRegistration: React.FC = () => {
                             <input
                               type="text"
                               placeholder="Artwork Name"
-                              className="w-full p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-sm text-[#1a202c] dark:text-white"
+                              className="w-full p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-sm text-[#1a202c] dark:text-white dark:text-white"
                               value={art.title}
                               onChange={(e) =>
                                 handleArtworkChange(
@@ -678,7 +678,7 @@ const ArtistRegistration: React.FC = () => {
                             <input
                               type="text"
                               placeholder="e.g. 5,000"
-                              className="w-full p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-sm text-[#1a202c] dark:text-white"
+                              className="w-full p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-sm text-[#1a202c] dark:text-white dark:text-white"
                               value={art.price}
                               onChange={(e) =>
                                 handleArtworkChange(
@@ -696,7 +696,7 @@ const ArtistRegistration: React.FC = () => {
                             <input
                               type="text"
                               placeholder="e.g. Oil on Canvas, Digital Illustration"
-                              className="w-full p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-sm text-[#1a202c] dark:text-white"
+                              className="w-full p-4 rounded-xl bg-[#F8FAFC] dark:bg-gray-800 border-none focus:ring-2 focus:ring-[var(--color-primary)]/10 outline-none text-sm text-[#1a202c] dark:text-white dark:text-white"
                               value={art.medium}
                               onChange={(e) =>
                                 handleArtworkChange(
@@ -732,7 +732,7 @@ const ArtistRegistration: React.FC = () => {
                 className="space-y-10 flex-1"
               >
                 <div className="space-y-2">
-                  <h2 className="text-3xl font-black text-[#1a202c] dark:text-white flex items-center gap-2">
+                  <h2 className="text-3xl font-black text-[#1a202c] dark:text-white dark:text-white flex items-center gap-2">
                     <ShieldCheck className="text-[var(--color-primary)]" />
                     Verification & Payments
                   </h2>
@@ -745,7 +745,7 @@ const ArtistRegistration: React.FC = () => {
                   {/* ID Verification */}
                   <div className="space-y-6">
                     <div className="p-10 border-2 border-dashed border-gray-200 rounded-[3rem] bg-[#F8FAFC] dark:bg-gray-800 text-center space-y-6">
-                      <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto shadow-sm">
+                      <div className="w-20 h-20 bg-white dark:bg-[#092b2b] rounded-3xl flex items-center justify-center mx-auto shadow-sm">
                         {formData.idProof ? (
                           <CheckCircle className="text-emerald-500" size={40} />
                         ) : (
@@ -753,7 +753,7 @@ const ArtistRegistration: React.FC = () => {
                         )}
                       </div>
                       <div>
-                        <p className="text-xl font-black text-[#1a202c] dark:text-white">
+                        <p className="text-xl font-black text-[#1a202c] dark:text-white dark:text-white">
                           Identity Proof (Optional)
                         </p>
                         <p className="text-[11px] text-[var(--text-muted)] uppercase tracking-widest mt-2">
@@ -845,7 +845,7 @@ const ArtistRegistration: React.FC = () => {
                 </div>
 
                 {/* Terms */}
-                <div className="p-8 bg-white/50 rounded-[2.5rem] border border-gray-100 backdrop-blur-sm">
+                <div className="p-8 bg-white/50 dark:bg-[#092b2b]/50 dark:border-[var(--glass-border)] rounded-[2.5rem] border border-gray-100 backdrop-blur-sm">
                   <label className="flex items-start gap-4 cursor-pointer group">
                     <div className="relative mt-1">
                       <input
@@ -867,7 +867,7 @@ const ArtistRegistration: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex-1 space-y-1">
-                      <p className="text-sm font-black text-[#1a202c] dark:text-white">
+                      <p className="text-sm font-black text-[#1a202c] dark:text-white dark:text-white">
                         Agree to Terms & Commission Policy
                       </p>
                       <p className="text-[11px] text-[var(--text-muted)] leading-relaxed font-medium">
@@ -897,7 +897,7 @@ const ArtistRegistration: React.FC = () => {
                   <CheckCircle size={72} />
                 </div>
                 <div className="space-y-4 max-w-md">
-                  <h2 className="text-5xl font-black text-[#1a202c] dark:text-white uppercase tracking-[-0.04em]">
+                  <h2 className="text-5xl font-black text-[#1a202c] dark:text-white dark:text-white uppercase tracking-[-0.04em]">
                     Under Review
                   </h2>
                   <p className="text-[var(--text-muted)] text-lg leading-relaxed font-medium">
@@ -926,7 +926,7 @@ const ArtistRegistration: React.FC = () => {
               <button
                 onClick={() => setStep(step - 1)}
                 disabled={step === 1 || isVerifying}
-                className={`flex items-center gap-2 px-8 py-4 font-black text-[var(--text-muted)] hover:text-[#1a202c] dark:text-white transition-all uppercase text-[11px] tracking-widest ${step === 1 ? "opacity-0 pointer-events-none" : ""}`}
+                className={`flex items-center gap-2 px-8 py-4 font-black text-[var(--text-muted)] hover:text-[#1a202c] dark:text-white dark:text-white transition-all uppercase text-[11px] tracking-widest ${step === 1 ? "opacity-0 pointer-events-none" : ""}`}
               >
                 <ArrowLeft size={20} /> Prev
               </button>
