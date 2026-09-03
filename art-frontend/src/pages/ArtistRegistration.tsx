@@ -243,37 +243,7 @@ const ArtistRegistration: React.FC = () => {
     }
   };
 
-  const PaintBlobs = () => (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          x: [0, 30, 0],
-          y: [0, 20, 0],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute -top-24 -left-24 w-[450px] h-[450px] bg-[var(--color-primary)]/10 rounded-full blur-[100px]"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          x: [0, -40, 0],
-          y: [0, 50, 0],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        className="absolute top-1/4 -right-32 w-[600px] h-[600px] bg-[#FFC107]/5 rounded-full blur-[120px]"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 1.15, 1],
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-        className="absolute -bottom-48 left-10 w-[500px] h-[500px] bg-[#FF5252]/5 rounded-full blur-[130px]"
-      />
-    </div>
-  );
+
 
   return (
     <div className="min-h-screen bg-[#fcfcfc] dark:bg-[#070a0f] relative overflow-hidden pt-12 pb-20 px-4 font-['Outfit'] transition-colors duration-500">
