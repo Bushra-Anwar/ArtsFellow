@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import { closeDatabase, getDatabase } from "./lib/mongo.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -17,6 +18,11 @@ import { initSocket } from "./socket.js";
 dotenv.config();
 
 const app = express();
+app.use(cors({
+  origin: "*", // Or specify the frontend URL: "https://for-artist.vercel.app"
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
+}));
 app.use(express.json());
 app.use("/uploads", express.static("public/uploads"));
 
