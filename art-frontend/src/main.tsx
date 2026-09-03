@@ -10,17 +10,15 @@ import { ChatProvider } from "./context/ChatContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <ErrorBoundary>
-      <ThemeProvider>
-        <AuthProvider>
-          <CartProvider>
-            <ChatProvider>
-              <App />
-            </ChatProvider>
-          </CartProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  </StrictMode>,
+  <ErrorBoundary>
+    <ThemeProvider>
+      <AuthProvider>
+        <CartProvider>
+          <ChatProvider>
+            <App />
+          </ChatProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ThemeProvider>
+  </ErrorBoundary>,
 );

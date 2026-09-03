@@ -155,7 +155,10 @@ const ArtistDashboard: React.FC = () => {
     if (activeTab === "requests" && user?._id) fetchRequests();
     if (activeTab === "overview" && user?._id) fetchStats();
     if (activeTab === "orders" && user?._id) fetchOrders();
-    if (activeTab === "earnings" && user?._id) fetchStats();
+    if (activeTab === "earnings" && user?._id) {
+      fetchStats();
+      fetchOrders();
+    }
   }, [activeTab, user?._id]);
 
   const fetchStats = async () => {
@@ -1576,6 +1579,53 @@ const ArtistDashboard: React.FC = () => {
                   : "0"}
               </h2>
               <p className="text-gray-500">Total Lifetime Earnings</p>
+            </div>
+
+            {/* Payment History */}
+            <div className="mt-8">
+              <h3 className="text-xl font-bold dark:text-white mb-4">
+                Payment History
+              </h3>
+              <div className="bg-white dark:bg-[var(--bg-primary)]/50 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-800 overflow-hidden">
+                {isLoadingOrders ? (
+                  <div className="p-8 text-center text-gray-500">Loading history...</div>
+                ) : orders.length > 0 ? (
+                  <div className="divide-y divide-gray-100 dark:divide-slate-800">
+                    {orders.map((order: any) => (
+                      <div
+                        key={order._id}
+                        className="p-6 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 text-green-600 rounded-full flex items-center justify-center">
+                            <DollarSign size={24} />
+                          </div>
+                          <div>
+                            <p className="font-bold dark:text-white">
+                              Payment from Order #{order._id.slice(-6)}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(order.createdAt).toLocaleDateString()} • {order.items?.map((i:any) => i.title).join(', ') || 'Artworks'}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600 text-lg">
+                            +${Number(order.total || 0).toLocaleString()}
+                          </p>
+                          <span className="text-xs px-2 py-1 bg-green-100 text-green-600 rounded-full font-bold uppercase mt-1 inline-block">
+                            Completed
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center text-gray-500">
+                    No payment history available yet.
+                  </div>
+                )}
+              </div>
             </div>
           </motion.div>
         )}

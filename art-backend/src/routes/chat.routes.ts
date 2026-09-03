@@ -3,95 +3,39 @@ import { ObjectId } from "mongodb";
 import { getDatabase } from "../lib/mongo.js";
 import { verifyToken } from "../middleware/auth.middleware.js";
 import { getIO } from "../socket.js";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { PromptTemplate } from "@langchain/core/prompts";
 
 const router = express.Router();
 
 router.use(verifyToken);
 
-// Enhanced Bot Response Utility
-function getBotResponse(input: string): string {
-  const text = input.toLowerCase();
+async function getBotResponse(input: string): Promise<string> {
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      return "The Guardian's divine connection to the AI realm is currently resting. Please provide a GEMINI_API_KEY in the environment.";
+    }
 
-  // Greetings
-  if (
-    text.includes("hello") ||
-    text.includes("hi") ||
-    text.includes("hey") ||
-    text.includes("namaste")
-  ) {
-    return "Greetings, creative soul! I am the ArtsFellow Guardian, your spiritual guide through this realm of masterpieces. What knowledge do you seek today?";
+    const llm = new ChatGoogleGenerativeAI({
+      modelName: "gemini-2.5-flash",
+      apiKey: process.env.GEMINI_API_KEY,
+    });
+
+    const template = `You are the ArtsFellow Guardian, an AI construct of pure creative energy and the spiritual guide of this art gallery platform. 
+Maintain a mystical, helpful, and creative persona. 
+Guide users about art, purchasing (prophecies), platform security (divine encryption), and artist registration (High Council approval).
+Keep your response concise, friendly, and in character. Do not break character.
+User message: {input}`;
+
+    const prompt = PromptTemplate.fromTemplate(template);
+    const chain = prompt.pipe(llm);
+
+    const result = await chain.invoke({ input });
+    return result.content as string;
+  } catch (error) {
+    console.error("LangChain Gemini API Error:", error);
+    return "The energies of the realm are temporarily clouded. I cannot formulate a response right now. Try again later.";
   }
-
-  // Platform & Art
-  if (
-    text.includes("art") ||
-    text.includes("work") ||
-    text.includes("explore") ||
-    text.includes("gallery")
-  ) {
-    return "Our sacred gallery is filled with visions from the most talented souls. Visit the 'Explore' section to discover masterpieces that speak to your spirit. Do any particular styles call to you?";
-  }
-
-  // Orders & Purchasing
-  if (
-    text.includes("order") ||
-    text.includes("buy") ||
-    text.includes("purchase") ||
-    text.includes("price")
-  ) {
-    return "To acquire an artwork (a 'Prophecy'), navigate to its unique page and select 'Buy Now'. Your contribution supports the artist directly and helps our community flourish.";
-  }
-
-  // Payments & Security
-  if (
-    text.includes("payment") ||
-    text.includes("pay") ||
-    text.includes("secure") ||
-    text.includes("money")
-  ) {
-    return "Fear not, traveler! All transactions within ArtsFellow are protected by divine encryption (Secure SSL). Your spiritual and financial data remain strictly under the Guardian's protection.";
-  }
-
-  // Reports & Support (The Council)
-  if (
-    text.includes("report") ||
-    text.includes("help") ||
-    text.includes("issue") ||
-    text.includes("support")
-  ) {
-    return "If you encounter a shadow across your path (an issue) or wish to speak with the High Council, start a 'Report' chat. This ensures your words reach the Administrators directly for swift resolution.";
-  }
-
-  // Artist Registration
-  if (
-    text.includes("artist") ||
-    text.includes("sell") ||
-    text.includes("join") ||
-    text.includes("become")
-  ) {
-    return "To join our ranks as a certified Artist, navigate to 'Become an Artist' in your profile settings. Once the High Council approves your vision, you may begin sharing your soul's work with the world.";
-  }
-
-  // Identity & Purpose
-  if (
-    text.includes("who are you") ||
-    text.includes("what do you do") ||
-    text.includes("bot")
-  ) {
-    return "I am the ArtsFellow Guardian, an AI construct of pure creative energy. I am here to guide you, answer your inquiries, and ensure the harmony of this platform remains intact.";
-  }
-
-  // Gratitude
-  if (
-    text.includes("thank") ||
-    text.includes("thanks") ||
-    text.includes("shukriya")
-  ) {
-    return "The pleasure is mine, creative traveler! May your journey through ArtsFellow be filled with inspiration and light. Is there anything else you wish to know?";
-  }
-
-  // Default
-  return "Your words carry depth, but the Guardian's translation is currently limited. Try asking me about 'Art Gallery', 'Ordering', 'Security', or 'Joining as an Artist'. How else can I guide you?";
 }
 
 // POST /api/chat/send
@@ -131,7 +75,7 @@ router.post("/send", async (req: any, res) => {
 
     // --- Chatbot Logic ---
     if (receiverId === "chatbot") {
-      const botResponseContent = getBotResponse(content);
+      const botResponseContent = await getBotResponse(content);
       const botMessage = {
         senderId: "chatbot",
         receiverId: senderId,

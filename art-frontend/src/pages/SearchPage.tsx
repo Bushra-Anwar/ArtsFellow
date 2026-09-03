@@ -239,6 +239,7 @@ const ArtworkModel = ({ url }: { url: string }) => {
 const SearchPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get("query") || "";
+  const initialCategory = searchParams.get("category") || "";
   const navigate = useNavigate();
   const { user, toggleWishlist } = useAuth();
   const { addToCart, cart, removeFromCart } = useCart();
@@ -285,33 +286,44 @@ const SearchPage: React.FC = () => {
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
       setHoverPreviewId((current) => (current === id ? null : current));
-    }, 500); // very relaxed closing window
+    }, 2000); // very relaxed closing window
   };
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     setSearchValue(initialQuery);
-    if (initialQuery) {
+    if (initialCategory && !selectedCategories.includes(initialCategory)) {
+      setSelectedCategories([initialCategory]);
+    }
+    if (initialQuery || initialCategory) {
       setTimeout(() => {
         const el = document.getElementById("search-results");
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
-  }, [initialQuery]);
+  }, [initialQuery, initialCategory]);
 
   useEffect(() => {
     const fetchArtworks = async () => {
       setLoading(true);
       try {
-        const res = await ArtworkService.getAllArtworks({
-          maxPrice: priceCap,
-          categories: selectedCategories,
-          style: selectedStyle,
-          orientation: selectedOrientation,
-        });
-        if (res.status === "ok") {
-          setArtworks((res.artworks || []) as ArtworkRecord[]);
+        const term = searchValue.trim();
+        if (term.length > 2) {
+          const res = await ArtworkService.aiSearchArtworks(term);
+          if (res.status === "ok") {
+            setArtworks((res.artworks || []) as ArtworkRecord[]);
+          }
+        } else {
+          const res = await ArtworkService.getAllArtworks({
+            maxPrice: priceCap,
+            categories: selectedCategories,
+            style: selectedStyle,
+            orientation: selectedOrientation,
+          });
+          if (res.status === "ok") {
+            setArtworks((res.artworks || []) as ArtworkRecord[]);
+          }
         }
       } catch (error) {
         console.error("Failed to load artworks", error);
@@ -322,10 +334,10 @@ const SearchPage: React.FC = () => {
 
     const debounce = setTimeout(() => {
       fetchArtworks();
-    }, 300);
+    }, 600);
 
     return () => clearTimeout(debounce);
-  }, [priceCap, selectedCategories, selectedStyle, selectedOrientation]);
+  }, [priceCap, selectedCategories, selectedStyle, selectedOrientation, searchValue]);
 
   const enrichedArtworks = useMemo(
     () =>
@@ -368,7 +380,10 @@ const SearchPage: React.FC = () => {
     return enrichedArtworks.filter((art) => {
       const artist = art.artistBrandName || art.artistName || "Unknown Artist";
       const searchable = `${art.title} ${artist} ${art.category || ""} ${art.description || ""} ${art.derivedStyle}`.toLowerCase();
-      const matchesQuery = !term || searchable.includes(term);
+
+      // If AI Search is active (term > 2), we trust the backend results and skip strict local string matching
+      const matchesQuery = term.length > 2 ? true : (!term || searchable.includes(term));
+
       const matchesCategory = selectedCategories.length === 0 || (art.category && selectedCategories.includes(art.category));
       const matchesStyle = selectedStyle === "All" || art.derivedStyle === selectedStyle;
       const matchesOrientation =
@@ -529,7 +544,7 @@ const SearchPage: React.FC = () => {
       setSelectedCategories([]);
       return;
     }
-    setSelectedCategories(prev => 
+    setSelectedCategories(prev =>
       prev.includes(val) ? prev.filter(c => c !== val) : [...prev, val]
     );
   };
@@ -885,9 +900,9 @@ const SearchPage: React.FC = () => {
 
             <div id="state-filters" className="flex flex-wrap items-center gap-3 px-6 md:px-10 py-5 bg-black/5 dark:bg-white/5 border-b border-white/20">
               {["All", "Delhi NCR", "Maharashtra", "Karnataka", "Kerala", "West Bengal", "Telangana", "Goa"].map(state => (
-                <button 
-                  key={state} 
-                  onClick={() => setSelectedExhibitionState(state)} 
+                <button
+                  key={state}
+                  onClick={() => setSelectedExhibitionState(state)}
                   className={`px-4 py-1.5 rounded-full border text-xs font-bold transition-all ${selectedExhibitionState === state ? "bg-[var(--color-primary)] border-transparent text-white" : "border-slate-300 dark:border-slate-700 text-slate-600 hover:bg-[var(--color-primary)] hover:border-transparent hover:text-white"}`}
                 >
                   {state}
@@ -898,7 +913,7 @@ const SearchPage: React.FC = () => {
             <div className="grid lg:grid-cols-[1fr_450px] xl:grid-cols-[1fr_600px] h-[600px]">
               {/* Left Side: Exhibition Cards List */}
               <div className="overflow-y-auto p-6 md:p-10 space-y-6">
-                
+
                 {/* GLOBAL RULES PANEL */}
                 <div className="bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/30 rounded-2xl p-5 mb-8">
                   <h4 className="text-sm font-bold text-orange-800 dark:text-orange-400 mb-3 flex items-center gap-2">
@@ -913,48 +928,48 @@ const SearchPage: React.FC = () => {
                 {exhibitionsData
                   .filter(ex => selectedExhibitionState === "All" || ex.state === selectedExhibitionState)
                   .map(ex => (
-                  <div key={ex.id} className="group flex flex-col sm:flex-row gap-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/10 rounded-3xl p-3 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                    <div className="sm:w-48 h-48 sm:h-auto min-h-[192px] rounded-2xl overflow-hidden relative cursor-pointer flex-shrink-0" onClick={() => setActiveExhibitionId(ex.id)}>
-                      <img src={ex.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={ex.name} />
-                      <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-md rounded-full px-2 py-1 text-[10px] font-black text-slate-900 shadow-sm flex items-center gap-1">
-                        ⭐ {ex.rating}
+                    <div key={ex.id} className="group flex flex-col sm:flex-row gap-5 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/10 rounded-3xl p-3 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                      <div className="sm:w-48 h-48 sm:h-auto min-h-[192px] rounded-2xl overflow-hidden relative cursor-pointer flex-shrink-0" onClick={() => setActiveExhibitionId(ex.id)}>
+                        <img src={ex.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={ex.name} />
+                        <div className="absolute top-3 right-3 bg-white/80 backdrop-blur-md rounded-full px-2 py-1 text-[10px] font-black text-slate-900 shadow-sm flex items-center gap-1">
+                          ⭐ {ex.rating}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex-1 py-3 px-2 flex flex-col justify-between">
-                      <div>
-                        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2 flex items-center gap-2">
-                          <span>🔥 {ex.category}</span>
-                        </div>
-                        <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors cursor-pointer" onClick={() => setActiveExhibitionId(ex.id)}>{ex.name}</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 mb-3">
-                          <p className="text-xs font-medium text-slate-500 flex items-center gap-2">📍 {ex.loc}</p>
-                          <p className="text-xs font-medium text-slate-500 flex items-center gap-2">🕒 {ex.time}</p>
-                          {ex.tickets && <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-2 mt-1 md:mt-0 col-span-1 md:col-span-2">🎟️ {ex.tickets}</p>}
-                        </div>
-                        {ex.inside && (
-                          <div className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-white/5 mb-4 leading-relaxed">
-                            {ex.inside}
+                      <div className="flex-1 py-3 px-2 flex flex-col justify-between">
+                        <div>
+                          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2 flex items-center gap-2">
+                            <span>🔥 {ex.category}</span>
                           </div>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 mt-auto">
-                        <button onClick={() => window.open(ex.link || "https://in.bookmyshow.com", "_blank")} className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-[var(--color-primary)] dark:hover:bg-[var(--color-primary)] dark:hover:text-white transition-all shadow-md">
-                          {ex.tickets?.includes('Free') ? 'Visit Website' : 'Book Tickets'}
-                        </button>
-                        <button 
-                          onClick={() => {
-                            setSavedExhibitions(prev => 
-                              prev.includes(ex.id) ? prev.filter(id => id !== ex.id) : [...prev, ex.id]
-                            )
-                          }}
-                          className={`px-4 py-3 rounded-xl border-2 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-1 ${savedExhibitions.includes(ex.id) ? 'border-red-500 text-red-500 bg-red-50 dark:bg-red-900/20' : 'border-slate-200 dark:border-slate-700 text-slate-500 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'}`}
-                        >
-                          {savedExhibitions.includes(ex.id) ? 'Saved' : 'Save'} <Heart size={14} className="ml-1" fill={savedExhibitions.includes(ex.id) ? 'currentColor' : 'none'} />
-                        </button>
+                          <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white leading-tight mb-2 group-hover:text-[var(--color-primary)] transition-colors cursor-pointer" onClick={() => setActiveExhibitionId(ex.id)}>{ex.name}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 mb-3">
+                            <p className="text-xs font-medium text-slate-500 flex items-center gap-2">📍 {ex.loc}</p>
+                            <p className="text-xs font-medium text-slate-500 flex items-center gap-2">🕒 {ex.time}</p>
+                            {ex.tickets && <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-2 mt-1 md:mt-0 col-span-1 md:col-span-2">🎟️ {ex.tickets}</p>}
+                          </div>
+                          {ex.inside && (
+                            <div className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-white/5 mb-4 leading-relaxed">
+                              {ex.inside}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 mt-auto">
+                          <button onClick={() => window.open(ex.link || "https://in.bookmyshow.com", "_blank")} className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black uppercase tracking-widest py-3 rounded-xl hover:bg-[var(--color-primary)] dark:hover:bg-[var(--color-primary)] dark:hover:text-white transition-all shadow-md">
+                            {ex.tickets?.includes('Free') ? 'Visit Website' : 'Book Tickets'}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSavedExhibitions(prev =>
+                                prev.includes(ex.id) ? prev.filter(id => id !== ex.id) : [...prev, ex.id]
+                              )
+                            }}
+                            className={`px-4 py-3 rounded-xl border-2 text-[10px] font-bold uppercase tracking-widest transition-all flex items-center gap-1 ${savedExhibitions.includes(ex.id) ? 'border-red-500 text-red-500 bg-red-50 dark:bg-red-900/20' : 'border-slate-200 dark:border-slate-700 text-slate-500 hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]'}`}
+                          >
+                            {savedExhibitions.includes(ex.id) ? 'Saved' : 'Save'} <Heart size={14} className="ml-1" fill={savedExhibitions.includes(ex.id) ? 'currentColor' : 'none'} />
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
 
               {/* Right Side: Live Map Shell or Details Pane */}
@@ -965,7 +980,7 @@ const SearchPage: React.FC = () => {
                     return (
                       <div className="absolute inset-0 h-full bg-white dark:bg-slate-900 p-8 flex flex-col z-20 overflow-hidden animate-in slide-in-from-right-8 duration-500 shadow-2xl">
                         <button onClick={() => setActiveExhibitionId(null)} className="absolute top-6 right-6 bg-slate-100/80 backdrop-blur-md dark:bg-slate-800/80 p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 z-30 transition-colors shadow-sm">
-                          <X size={18} className="text-slate-600 dark:text-slate-300"/>
+                          <X size={18} className="text-slate-600 dark:text-slate-300" />
                         </button>
                         <div className="relative w-full h-56 shrink-0 rounded-2xl overflow-hidden mb-6 shadow-md border border-slate-100 dark:border-white/5">
                           <img src={activeExhibition.img} className="w-full h-full object-cover" alt={activeExhibition.name} />
@@ -977,13 +992,13 @@ const SearchPage: React.FC = () => {
                         <div className="flex-1 overflow-y-auto pr-2 pb-6 custom-scrollbar">
                           <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-2 leading-tight">{activeExhibition.name}</h2>
                           <p className="text-slate-500 dark:text-slate-400 font-medium mb-6 flex items-center gap-2">📍 {activeExhibition.loc}</p>
-                          
+
                           <div className="space-y-4">
                             <div className="bg-slate-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-slate-100 dark:border-white/5">
                               <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-1 flex items-center gap-2">🕒 Timings & Schedule</h4>
                               <p className="text-sm font-medium text-slate-600 dark:text-slate-400">{activeExhibition.time}</p>
                             </div>
-                            
+
                             <div className="bg-emerald-50 dark:bg-emerald-950/20 p-5 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
                               <h4 className="text-sm font-bold text-emerald-800 dark:text-emerald-400 mb-1 flex items-center gap-2">🎟️ Ticket Pricing</h4>
                               <p className="text-sm font-medium text-emerald-700 dark:text-emerald-500">{activeExhibition.tickets || 'Free Entry'}</p>
@@ -1531,7 +1546,7 @@ const SearchPage: React.FC = () => {
             <div id="search-results" className="mb-5 flex flex-wrap items-center justify-between gap-4">
               <div>
                 <div className="text-xs uppercase tracking-[0.22em] text-slate-400">Results Grid</div>
-                <h2 
+                <h2
                   onClick={() => {
                     resetFilters();
                     navigate("/search?query=glass");

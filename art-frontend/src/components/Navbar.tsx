@@ -69,11 +69,10 @@ const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center space-x-6">
               {/* Categories Mega Menu */}
               <div className="group static h-full flex items-center">
-                <button className="bg-gradient-to-r from-teal-700 to-teal-500 text-white shadow-md hover:shadow-lg transition-all px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-1 border border-teal-400/30">
-                  All Categories{" "}
-                  <span className="text-xs group-hover:rotate-180 transition-transform">
-                    ▼
-                  </span>
+                <button className="bg-teal-50 dark:bg-[var(--card-bg)]/10 hover:bg-teal-100 dark:hover:bg-slate-800 transition-all px-4 py-1.5 rounded-full text-xs font-black flex items-center gap-2 text-teal-800 dark:text-slate-200 border border-teal-100 dark:border-slate-800">
+                  <Menu className="h-3.5 w-3.5 text-[var(--color-primary)]" />
+                  All Categories
+                  <ChevronDown className="h-3 w-3 text-[var(--color-primary)] group-hover:rotate-180 transition-transform duration-200" />
                 </button>
                 <div className="absolute top-full left-0 right-0 bg-white/95 dark:bg-[#0a1c22]/95 shadow-2xl border-t border-[var(--color-primary)]/20 overflow-hidden hidden group-hover:block transition-all backdrop-blur-3xl min-h-[400px] z-40">
                   <div className="max-w-7xl mx-auto px-8 py-8">
@@ -110,6 +109,17 @@ const Navbar: React.FC = () => {
                 >
                   <Palette className="h-3.5 w-3.5 text-[var(--color-primary)]" />
                   Artists
+                </Link>
+              </div>
+
+              {/* Discount Link */}
+              <div className="group static">
+                <Link
+                  to="/discount"
+                  className="bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all px-4 py-1.5 rounded-full text-xs font-black flex items-center gap-2 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50"
+                >
+                  <ShoppingBag className="h-3.5 w-3.5 text-red-500" />
+                  Discount
                 </Link>
               </div>
 
@@ -393,6 +403,21 @@ const Navbar: React.FC = () => {
                     <ChevronRight
                       size={18}
                       className="text-[var(--text-muted)]"
+                    />
+                  </Link>
+
+                  <Link
+                    to="/discount"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 font-bold text-lg"
+                  >
+                    <span className="flex items-center gap-2">
+                      <ShoppingBag size={20} className="text-red-500" />
+                      Discount
+                    </span>
+                    <ChevronRight
+                      size={18}
+                      className="text-red-400"
                     />
                   </Link>
 

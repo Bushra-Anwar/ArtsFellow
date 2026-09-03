@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, X, Send, Bot } from "lucide-react";
+import { User, X, Send, Bot, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export const AiCurator: React.FC = () => {
@@ -28,8 +28,8 @@ export const AiCurator: React.FC = () => {
     if (isOpen) scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e?: React.SyntheticEvent) => {
+    if (e) e.preventDefault();
     if (!input.trim()) return;
 
     const userMsg = input.trim();
@@ -48,15 +48,19 @@ export const AiCurator: React.FC = () => {
       } else if (lower.includes("painting") || lower.includes("canvas")) {
         aiResponse = "Canvas paintings carry such a unique texture. Let me refine our collection to show you the top oil and acrylic masterpieces.";
         setTimeout(() => navigate("/search?query=Paintings"), 2000);
-      } else if (lower.includes("exhibition") || lower.includes("map")) {
+      } else if (lower.includes("exhibition") || lower.includes("map") || lower.includes("near me")) {
         aiResponse = "Looking for physical galleries? I am pulling up the Live Map to show you exhibitions within 5km of your location.";
         setTimeout(() => {
           const section = document.getElementById('exhibition-discovery');
           if (section) section.scrollIntoView({ behavior: 'smooth' });
           else navigate('/search');
         }, 2000);
-      } else if (lower.includes("hi") || lower.includes("hello")) {
+      } else if (lower.includes("hi") || lower.includes("hello") || lower.includes("hey")) {
         aiResponse = "Greetings! My intelligence model uses your search history to recommend the perfect masterpiece. What draws your eye?";
+      } else if (lower.includes("help") || lower.includes("support")) {
+        aiResponse = "If you need system support or have platform issues, please open the main ChatPage and select the 'Admin' or 'High Council' to receive direct support.";
+      } else if (lower.includes("price") || lower.includes("buy") || lower.includes("cost")) {
+        aiResponse = "To buy an artwork, click on it to open its details page and select the Purchase option. Let me know if you would like me to take you to the Search Page.";
       }
 
       setMessages((prev) => [...prev, { role: "ai", text: aiResponse }]);
@@ -102,12 +106,29 @@ export const AiCurator: React.FC = () => {
                   <p className="text-[10px] text-[#00a3ad] dark:text-teal-400 font-bold">Online & Analyzing</p>
                 </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
-              >
-                <X size={18} />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    if (window.confirm("Clear all chat history?")) {
+                      const initialMsg = [
+                        { role: "ai" as const, text: "Hello! I am your AI Curator. I've analyzed your browsing patterns. Are you looking for Digital Art or physical canvas paintings today?" }
+                      ];
+                      setMessages(initialMsg);
+                      localStorage.setItem("ai_chat_history", JSON.stringify(initialMsg));
+                    }
+                  }}
+                  className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                  title="Clear Chat History"
+                >
+                  <Trash2 size={16} />
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
             {/* Chat Area */}
@@ -144,6 +165,11 @@ export const AiCurator: React.FC = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSubmit(e);
+                    }
+                  }}
                   placeholder="Ask me to find art..."
                   className="w-full bg-slate-50 dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 rounded-full pl-4 pr-12 py-3 outline-none border border-slate-200 dark:border-slate-700 focus:border-teal-400 transition-colors"
                 />

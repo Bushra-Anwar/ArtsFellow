@@ -6,13 +6,15 @@ import {
   searchArtworks,
   getTopRatedArt,
   getLatestArt,
-  visionSearch
+  visionSearch,
+  aiSearchArtworks
 } from "../controllers/artwork.controller.js";
 
 const router = express.Router();
 
 router.get("/", getAllArtworks); // /api/artworks
 router.get("/search", searchArtworks); // /api/artworks/search
+router.get("/ai-search", aiSearchArtworks); // /api/artworks/ai-search
 router.get("/top-rated", getTopRatedArt); // /api/artworks/top-rated
 router.get("/latest", getLatestArt); // /api/artworks/latest
 router.post("/batch", getArtworksByIds); // /api/artworks/batch

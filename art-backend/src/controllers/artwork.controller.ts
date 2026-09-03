@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Artwork } from "../models/Artwork.js";
 
 const styleRules = [
@@ -140,5 +141,93 @@ export const getLatestArt = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching latest artworks:", error);
     res.status(500).json({ status: "error", message: "Fetch failed" });
+  }
+};
+
+const embeddingCache = new Map<string, number[]>();
+
+const cosineSimilarity = (vecA: number[], vecB: number[]) => {
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  for (let i = 0; i < vecA.length; i++) {
+    dotProduct += vecA[i] * vecB[i];
+    normA += vecA[i] * vecA[i];
+    normB += vecB[i] * vecB[i];
+  }
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+};
+
+export const aiSearchArtworks = async (req: Request, res: Response) => {
+  try {
+    const query = req.query.q as string;
+    if (!query) {
+      res.status(400).json({ status: "error", message: "Query required" });
+      return;
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+       res.status(500).json({ status: "error", message: "Gemini API key missing" });
+       return;
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-embedding-001" });
+
+    // 1. Embed user query
+    const queryRes = await model.embedContent(query);
+    const queryEmbedding = queryRes.embedding.values;
+
+    // 2. Fetch all artworks
+    const artworks = await Artwork.findAll();
+    
+    // 3. Process embeddings in chunks to avoid rate limits
+    const scoredArtworks: any[] = [];
+    const BATCH_SIZE = 5;
+
+    for (let i = 0; i < artworks.length; i += BATCH_SIZE) {
+      const batch = artworks.slice(i, i + BATCH_SIZE);
+      const batchPromises = batch.map(async (art: any) => {
+        const artId = art._id.toString();
+        let artEmbedding = embeddingCache.get(artId);
+
+        if (!artEmbedding) {
+          const artText = `${art.title} ${art.category || ""} ${art.description || ""} ${art.artistName || ""}`;
+          try {
+            const artRes = await model.embedContent(artText);
+            artEmbedding = artRes.embedding.values;
+            embeddingCache.set(artId, artEmbedding);
+          } catch (e) {
+            console.error("Embedding error for art:", art.title, e);
+            return null;
+          }
+        }
+        
+        if (artEmbedding) {
+           const score = cosineSimilarity(queryEmbedding, artEmbedding);
+           return { art, score };
+        }
+        return null;
+      });
+
+      const batchResults = await Promise.all(batchPromises);
+      for (const result of batchResults) {
+        if (result) scoredArtworks.push(result);
+      }
+      
+      // Delay slightly between batches
+      if (i + BATCH_SIZE < artworks.length) {
+         await new Promise(r => setTimeout(r, 300));
+      }
+    }
+
+    // 4. Sort and return top 12
+    scoredArtworks.sort((a, b) => b.score - a.score);
+    const topArtworks = scoredArtworks.slice(0, 12).map(sa => sa.art);
+
+    res.json({ status: "ok", artworks: topArtworks });
+  } catch (error) {
+    console.error("Error in AI Search:", error);
+    res.status(500).json({ status: "error", message: "AI Search failed" });
   }
 };

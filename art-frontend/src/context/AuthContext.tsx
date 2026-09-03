@@ -250,26 +250,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     return "mock-qr-session-" + Math.random().toString(36).substring(7);
   };
 
+  const contextValue = React.useMemo(() => ({
+    user,
+    role,
+    isAuthenticated: !!user,
+    isLoading,
+    loginWithEmail,
+    loginWithOtp,
+    sendOtp,
+    logout,
+    forgotPassword,
+    resetPassword,
+    verifySignup,
+    toggleWishlist,
+    addAddress,
+    initiateQrLogin,
+    updateProfile,
+  }), [user, role, isLoading]);
+
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        role,
-        isAuthenticated: !!user,
-        isLoading,
-        loginWithEmail,
-        loginWithOtp,
-        sendOtp,
-        logout,
-        forgotPassword,
-        resetPassword,
-        verifySignup,
-        toggleWishlist,
-        addAddress,
-        initiateQrLogin,
-        updateProfile,
-      }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

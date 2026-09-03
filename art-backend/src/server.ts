@@ -10,6 +10,7 @@ import orderRoutes from "./routes/order.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import ratingRoutes from "./routes/rating.routes.js";
+import generateRoutes from "./routes/generate.routes.js";
 import { createServer } from "http";
 import { initSocket } from "./socket.js";
 
@@ -29,6 +30,7 @@ app.use("/api/artist", artistRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/ratings", ratingRoutes);
+app.use("/api/generate", generateRoutes);
 
 app.get("/api/health", async (_req, res) => {
   try {

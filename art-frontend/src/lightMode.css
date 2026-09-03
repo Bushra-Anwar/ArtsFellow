@@ -337,10 +337,10 @@
 }
 
 :root:not(.dark) p,
-:root:not(.dark) span,
 :root:not(.dark) li {
   color: var(--text-primary);
 }
+
 
 /* ─── CARDS ──────────────────────────────────────────────────── */
 :root:not(.dark) .card,
@@ -580,6 +580,90 @@
   }
 }
 
-.light-fade-in {
-  animation: light-fade-in 0.5s ease forwards;
+/* ─── DISCOUNT PAGE / PAINT BY NUMBERS ─────────────────────────── */
+
+/* Hero section text */
+:root:not(.dark) .min-h-screen.bg-\[\#FAFAFA\],
+:root:not(.dark) section h1,
+:root:not(.dark) section h2,
+:root:not(.dark) section h3 {
+  color: var(--text-main);
+}
+
+/* Section paragraph text — ensure readability */
+:root:not(.dark) section p {
+  color: var(--text-primary);
+}
+
+/* Teal accent labels (small badges/tags inside sections) */
+:root:not(.dark) section span[class*="text-\[\#008080\]"],
+:root:not(.dark) section span[class*="text-teal"] {
+  color: var(--color-primary) !important;
+}
+
+/* Paint-by-numbers section background */
+:root:not(.dark) section[class*="from-\[\#f0f9ff\]"] {
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 50%, #f0fdf4 100%) !important;
+}
+
+/* Curator's Wall section */
+:root:not(.dark) section[class*="bg-\[\#EAE8E3\]"] {
+  background-color: #eae8e3 !important;
+}
+
+/* Feature cards in Why Choose ArtsFellow */
+:root:not(.dark) section[class*="bg-white"][class*="dark:bg-\[\#12131A\]"] {
+  background-color: #ffffff !important;
+}
+
+/* Upload/drop zone border — ensure the dashed border is visible */
+:root:not(.dark) [class*="border-dashed"] {
+  border-color: rgba(0, 128, 128, 0.5) !important;
+}
+
+/* Color palette strip on PBN section */
+:root:not(.dark) [id="pbn-output-img"] {
+  border-color: rgba(0, 128, 128, 0.15) !important;
+}
+
+/* Section headers inside "Why Us" */
+:root:not(.dark) section#why-us h3,
+:root:not(.dark) section h3[class*="text-lg"] {
+  color: #111827 !important;
+}
+
+/* "Our Promise" / badge labels */
+:root:not(.dark) [class*="tracking-\[0\.4em\]"] {
+  color: var(--color-primary) !important;
+}
+
+/* Footer in DiscountPage */
+:root:not(.dark) footer {
+  background-color: #ffffff;
+  color: var(--text-primary);
+}
+:root:not(.dark) footer span {
+  color: var(--text-primary);
+}
+
+/* Fix "Bring Creativity Home" CTA section — dark bg, keep white text */
+:root:not(.dark) section[class*="pb-24"] div[class*="from-\[\#1F2937\]"] h2,
+:root:not(.dark) section[class*="pb-24"] div[class*="from-\[\#1F2937\]"] p {
+  color: #ffffff !important;
+}
+
+/* Trending cards — ensure price and text is visible */
+:root:not(.dark) [class*="bg-white"][class*="dark:bg-\[\#1A1A1A\]"] h3 {
+  color: #1f2937 !important;
+}
+
+/* How It Works — step numbers */
+:root:not(.dark) span[class*="text-5xl"][class*="font-black"] {
+  color: rgba(0, 128, 128, 0.12) !important;
+}
+
+/* Artist card follow button text */
+:root:not(.dark) section#artists button {
+  color: #1f2937;
+  border-color: rgba(31, 41, 55, 0.6);
 }

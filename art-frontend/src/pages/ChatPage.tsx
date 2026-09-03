@@ -39,14 +39,15 @@ import {
   PlusCircle,
   Sparkles,
 } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useChat } from "../context/ChatContext";
 
 const ChatPage = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { socket, onlineUsers, typingUsers, emitTyping, emitStopTyping } = useChat();
   const location = useLocation();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<any[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
   const [text, setText] = useState("");
@@ -173,6 +174,10 @@ const ChatPage = () => {
         const res = await fetch(`/api/chat/history/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (res.status === 401) {
+          logout();
+          return;
+        }
         const data = await res.json();
         if (data.status === "ok") {
           setMessages(data.messages);
@@ -200,6 +205,10 @@ const ChatPage = () => {
       const res = await fetch("/api/chat/contacts", {
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (res.status === 401) {
+        logout();
+        return;
+      }
       const data = await res.json();
       if (data.status === "ok") {
         setContacts(data.contacts);
@@ -212,6 +221,19 @@ const ChatPage = () => {
   useEffect(() => {
     fetchContacts();
   }, [user]);
+
+  // Auto-select first contact or chatbot on initial load to avoid empty screen
+  useEffect(() => {
+    if (contacts.length > 0 && !activeChatUser) {
+      const defaultContact = contacts.find((c) => c.userId === "chatbot") || contacts[0];
+      setActiveChatUser({
+        id: defaultContact.userId,
+        name: defaultContact.name,
+        avatar: defaultContact.avatar,
+        role: defaultContact.role,
+      });
+    }
+  }, [contacts]);
 
   // Auto-scroll
   useEffect(() => {
@@ -234,7 +256,7 @@ const ChatPage = () => {
     const finalUrl = customContent?.attachmentUrl || "";
 
     if (!finalContent.trim() && !finalUrl) return;
-    if (!user || !activeChatUser || !socket) return;
+    if (!user || !activeChatUser) return;
 
     setText("");
     setShowEmojiPicker(false);
@@ -242,7 +264,7 @@ const ChatPage = () => {
 
     // Stop typing indicator
     const receiverId = activeChatUser.id || activeChatUser._id;
-    emitStopTyping(receiverId);
+    if (socket) emitStopTyping(receiverId);
 
     const category =
       activeChatUser.id === "chatbot"
@@ -259,15 +281,31 @@ const ChatPage = () => {
       category: category,
     };
 
-    // ── Send via WebSocket with acknowledgment ───────────
-    socket.emit("sendMessage", messageData, (response: any) => {
-      if (response?.status === "ok") {
-        setMessages((prev) => [...prev, response.data]);
-        fetchContacts();
-      } else if (response?.error) {
-        console.error("Send failed:", response.error);
+    // ── Send via HTTP POST ───────────
+    try {
+      const token = localStorage.getItem("art_token");
+      const res = await fetch("/api/chat/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(messageData),
+      });
+      if (res.status === 401) {
+        logout();
+        return;
       }
-    });
+      const data = await res.json();
+      if (data.status === "ok") {
+        setMessages((prev) => [...prev, data.data]);
+        fetchContacts();
+      } else {
+        console.error("Send failed:", data.message);
+      }
+    } catch (err) {
+      console.error("Send failed:", err);
+    }
 
     setTimeout(() => {
       if (scrollRef.current)
@@ -361,7 +399,7 @@ const ChatPage = () => {
         c.role !== "admin" &&
         c.userId !== "chatbot" &&
         new Date().getTime() - new Date(c.lastMessageTime).getTime() <
-          86400000 * 2,
+        86400000 * 2,
     ),
     history: filteredContacts.filter(
       (c) =>
@@ -370,7 +408,7 @@ const ChatPage = () => {
         c.role !== "admin" &&
         c.userId !== "chatbot" &&
         new Date().getTime() - new Date(c.lastMessageTime).getTime() >=
-          86400000 * 2,
+        86400000 * 2,
     ),
   };
 
@@ -380,8 +418,37 @@ const ChatPage = () => {
   const isContactOnline =
     activeChatUser && onlineUsers.has(activeChatUser.id || activeChatUser._id || "");
 
-  if (!user)
-    return <div className="p-10 text-center">Please login to chat.</div>;
+  if (!user) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-[#071c22]/10 dark:bg-[#071c22]/50 backdrop-blur-md">
+        <div className="max-w-md w-full mx-4 p-8 rounded-[30px] border border-cyan-500/10 bg-[#0a1e26]/80 shadow-2xl text-center space-y-6 animate-in fade-in-50 zoom-in-95">
+          <div className="w-16 h-16 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20 text-cyan-400">
+            <MessageSquare size={30} className="animate-pulse" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tight text-white font-serif italic">
+              Authentication Required
+            </h2>
+            <p className="text-sm text-cyan-200/60 leading-relaxed">
+              Your session has expired or you are not logged in. Please log in to your account to send and receive messages in the realm.
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              window.dispatchEvent(
+                new CustomEvent("open-login-modal", {
+                  detail: { mode: "login" },
+                }),
+              );
+            }}
+            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-400 hover:to-cyan-600 text-white font-bold tracking-wider uppercase text-xs shadow-lg shadow-cyan-900/40 hover:shadow-cyan-500/20 transition-all duration-300 cursor-pointer"
+          >
+            Log In Now
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -392,6 +459,7 @@ const ChatPage = () => {
         className={`hidden md:flex w-[70px] flex-col items-center py-8 gap-10 z-50 shrink-0 ${isDarkMode ? "bg-gradient-to-b from-[#051318] to-[#071c22]" : "bg-[#b6bfc5]"}`}
       >
         <div
+          onClick={() => navigate("/chat")}
           className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-xl cursor-pointer hover:scale-105 transition-all ${isDarkMode ? "bg-cyan-600 shadow-cyan-600/10" : "bg-[#2b5468] shadow-slate-900/10"}`}
         >
           <MessageSquare size={20} />
@@ -401,23 +469,28 @@ const ChatPage = () => {
         >
           <Phone
             size={20}
+            onClick={() => window.location.href = "tel:+1234567890"}
             className="hover:text-cyan-400 transition-colors cursor-pointer"
           />
           <Mail
             size={20}
+            onClick={() => window.location.href = "mailto:support@artsfellow.com"}
             className="hover:text-cyan-400 transition-colors cursor-pointer"
           />
           <Users
             size={20}
+            onClick={() => navigate("/artists")}
             className="hover:text-cyan-400 transition-colors cursor-pointer"
           />
           <LayoutDashboard
             size={20}
+            onClick={() => navigate(user?.role === "artist" ? "/artist/dashboard" : user?.role === "admin" ? "/admin" : "/")}
             className="hover:text-cyan-400 transition-colors cursor-pointer"
           />
         </div>
         <Settings
           size={20}
+          onClick={() => navigate("/profile")}
           className={`mt-auto pb-8 hover:text-cyan-400 transition-colors cursor-pointer ${isDarkMode ? "text-slate-500" : "text-[#4a6375]"}`}
         />
       </div>
@@ -432,9 +505,9 @@ const ChatPage = () => {
           style={
             isDarkMode
               ? {
-                  background:
-                    "linear-gradient(180deg, #081920 0%, #0a1e26 100%)",
-                }
+                background:
+                  "linear-gradient(180deg, #081920 0%, #0a1e26 100%)",
+              }
               : {}
           }
         >
@@ -668,16 +741,21 @@ const ChatPage = () => {
                 style={
                   isDarkMode
                     ? {
-                        backgroundImage:
-                          "radial-gradient(circle, rgba(6,182,212,0.07) 1px, transparent 1px)",
-                        backgroundSize: "28px 28px",
-                        backgroundColor: "#0c2530",
-                      }
+                      backgroundImage:
+                        "radial-gradient(circle, rgba(6,182,212,0.07) 1px, transparent 1px)",
+                      backgroundSize: "28px 28px",
+                      backgroundColor: "#0c2530",
+                    }
                     : {}
                 }
               >
                 {messages.map((msg, idx) => {
-                  const isMe = msg.senderId === user._id;
+                  const isMe =
+                    user &&
+                    (msg.senderId === user._id ||
+                      msg.senderId === user.id ||
+                      msg.senderId?.toString() === user._id?.toString() ||
+                      msg.senderId?.toString() === user.id?.toString());
                   const isBot = msg.senderId === "chatbot";
                   return (
                     <div
@@ -695,7 +773,7 @@ const ChatPage = () => {
                                 : isBot
                                   ? "https://cdn-icons-png.flaticon.com/512/8943/8943377.png"
                                   : activeChatUser.avatar ||
-                                    "/default-avatar.png"
+                                  "/default-avatar.png"
                             }
                             className={`w-8 h-8 rounded-full border border-white/5 object-cover ${isBot ? "bg-cyan-500/10" : ""}`}
                           />
@@ -704,20 +782,19 @@ const ChatPage = () => {
                           className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}
                         >
                           <div
-                            className={`px-5 py-3 rounded-[22px] text-[14px] font-medium leading-[1.5] shadow-lg transition-all
-                                                        ${
-                                                          isMe
-                                                            ? isDarkMode
-                                                              ? "bg-gradient-to-br from-cyan-500 to-cyan-700 text-white rounded-tr-none shadow-cyan-900/40"
-                                                              : "bg-gradient-to-br from-[#2b5468] to-[#1a3a4a] text-white rounded-tr-none shadow-slate-400/20"
-                                                            : isBot
-                                                              ? isDarkMode
-                                                                ? "bg-white/5 text-cyan-100 border border-cyan-400/20 rounded-tl-none backdrop-blur-md shadow-cyan-950/30"
-                                                                : "bg-[#e2e8f0] text-[#2b5468] rounded-tl-none border border-white/60"
-                                                              : isDarkMode
-                                                                ? "bg-white/8 backdrop-blur-sm text-slate-100 rounded-tl-none border border-white/5"
-                                                                : "bg-white text-slate-700 rounded-tl-none shadow-sm"
-                                                        }`}
+                            className={`px-5 py-3 rounded-[22px] text-[14px] font-medium leading-[1.5] shadow-sm transition-all
+                                                        ${isMe
+                                ? isDarkMode
+                                  ? "bg-gradient-to-br from-cyan-500 to-cyan-700 text-white rounded-tr-none shadow-cyan-900/40"
+                                  : "bg-gradient-to-br from-[#fffbeb] to-[#fde68a] text-[#78350f] rounded-tr-none border border-[#fcd34d]/40 shadow-sm"
+                                : isBot
+                                  ? isDarkMode
+                                    ? "bg-white/5 text-cyan-100 border border-cyan-400/20 rounded-tl-none backdrop-blur-md shadow-cyan-950/30"
+                                    : "bg-[#e2e8f0] text-[#2b5468] rounded-tl-none border border-white/60"
+                                  : isDarkMode
+                                    ? "bg-white/8 backdrop-blur-sm text-slate-100 rounded-tl-none border border-white/5"
+                                    : "bg-white text-slate-700 rounded-tl-none shadow-sm"
+                              }`}
                           >
                             {msg.type === "image" && msg.attachmentUrl ? (
                               <div className="space-y-2">
@@ -739,13 +816,13 @@ const ChatPage = () => {
                                 <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
                                   <FileText size={18} />
                                 </div>
-                                <span className="text-[12px] font-bold underline truncate max-w-[150px]">
+                                <span className={`text-[12px] font-bold underline truncate max-w-[150px] ${isMe ? (isDarkMode ? "text-white" : "text-[#78350f]") : "text-inherit"}`}>
                                   {msg.content}
                                 </span>
                               </div>
                             ) : (
                               <span
-                                className={isBot ? "italic font-serif" : ""}
+                                className={`${isBot ? "italic font-serif" : ""} ${isMe ? (isDarkMode ? "text-white" : "text-[#78350f]") : (isBot ? (isDarkMode ? "text-cyan-100" : "text-[#2b5468]") : (isDarkMode ? "text-slate-100" : "text-slate-700"))}`}
                               >
                                 {msg.content}
                               </span>
@@ -755,12 +832,15 @@ const ChatPage = () => {
                             <span
                               className={`text-[9px] font-bold ${isDarkMode ? "text-white/10" : "text-slate-400"}`}
                             >
-                              {new Date(msg.timestamp)
-                                .toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })
-                                .toLowerCase()}
+                              {(() => {
+                                const d = new Date(msg.timestamp);
+                                return isNaN(d.getTime())
+                                  ? ""
+                                  : d.toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    }).toLowerCase();
+                              })()}
                             </span>
                             {/* Read receipts for sent messages */}
                             {isMe && (
@@ -790,11 +870,10 @@ const ChatPage = () => {
                         />
                       </div>
                       <div
-                        className={`px-5 py-3 rounded-[22px] rounded-tl-none flex items-center gap-1.5 ${
-                          isDarkMode
-                            ? "bg-white/5 border border-white/5"
-                            : "bg-white border border-slate-100"
-                        }`}
+                        className={`px-5 py-3 rounded-[22px] rounded-tl-none flex items-center gap-1.5 ${isDarkMode
+                          ? "bg-white/5 border border-white/5"
+                          : "bg-white border border-slate-100"
+                          }`}
                       >
                         <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: "0ms" }} />
                         <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: "150ms" }} />
@@ -818,11 +897,10 @@ const ChatPage = () => {
               <div className="px-3 md:px-6 py-3 md:py-4 pb-4 md:pb-8 relative safe-bottom">
                 <form
                   onSubmit={handleSend}
-                  className={`rounded-[20px] md:rounded-[25px] px-2 md:px-3 py-2 flex items-center gap-1 md:gap-2 transition-all ring-1 ${
-                    isDarkMode
-                      ? "bg-white/5 ring-cyan-500/10 focus-within:ring-cyan-500/30 focus-within:bg-white/8 backdrop-blur-sm"
-                      : "bg-white/60 ring-gray-200 shadow-sm focus-within:ring-teal-400/40"
-                  }`}
+                  className={`rounded-[20px] md:rounded-[25px] px-2 md:px-3 py-2 flex items-center gap-1 md:gap-2 transition-all ring-1 ${isDarkMode
+                    ? "bg-white/5 ring-cyan-500/10 focus-within:ring-cyan-500/30 focus-within:bg-white/8 backdrop-blur-sm"
+                    : "bg-white/60 ring-gray-200 shadow-sm focus-within:ring-teal-400/40"
+                    }`}
                 >
                   <div className="relative">
                     <button
@@ -884,6 +962,12 @@ const ChatPage = () => {
                         ? "Query the Guardian..."
                         : "Speak your mind..."
                     }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSend();
+                      }
+                    }}
                     className={`flex-1 bg-transparent border-none focus:ring-0 text-[14px] font-medium px-2 ${isDarkMode ? "text-white" : "text-slate-700"}`}
                   />
                   <div className="relative">
@@ -964,9 +1048,9 @@ const ChatPage = () => {
                     : activeChatUser?.id === "chatbot"
                       ? "DIVINE ENTITY"
                       : (isContactOnline
-                          ? "🟢 ONLINE"
-                          : "⚫ OFFLINE"
-                        ) + ` · ${activeChatUser?.role?.toUpperCase() || "USER"}`}
+                        ? "🟢 ONLINE"
+                        : "⚫ OFFLINE"
+                      ) + ` · ${activeChatUser?.role?.toUpperCase() || "USER"}`}
                 </p>
               </div>
               <div className="space-y-6 w-full">
@@ -990,18 +1074,21 @@ const ChatPage = () => {
                       label="Vantage"
                       value="Oslo, Norway"
                       isDarkMode={isDarkMode}
+                      onClick={() => window.open("https://maps.google.com/?q=Oslo, Norway", "_blank")}
                     />
                     <DetailItem
                       icon={<Phone size={18} />}
                       label="Oracle"
                       value="+33 1 45 55"
                       isDarkMode={isDarkMode}
+                      onClick={() => window.location.href = "tel:+3314555"}
                     />
                     <DetailItem
                       icon={<Mail size={18} />}
                       label="Spirit"
                       value="support@art.com"
                       isDarkMode={isDarkMode}
+                      onClick={() => window.location.href = "mailto:support@art.com"}
                     />
                   </>
                 )}
@@ -1083,8 +1170,11 @@ const ContactCard = ({
   </button>
 );
 
-const DetailItem = ({ icon, label, value, isDarkMode }: any) => (
-  <div className="flex items-center gap-4 group">
+const DetailItem = ({ icon, label, value, isDarkMode, onClick }: any) => (
+  <div 
+    className={`flex items-center gap-4 group ${onClick ? "cursor-pointer hover:opacity-80" : ""}`}
+    onClick={onClick}
+  >
     <div
       className={`w-10 h-10 rounded-[15px] flex items-center justify-center border transition-all ${isDarkMode ? "bg-white/5 text-white/10 border-white/5 group-hover:text-cyan-400 shadow-inner" : "bg-white/40 text-[#2b5468]/40 border-white/60 group-hover:text-[#2b5468] shadow-sm"}`}
     >

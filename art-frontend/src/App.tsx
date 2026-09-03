@@ -1,13 +1,14 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
-import ChatWidget from "./components/Chat/ChatWidget";
 import "./App.css";
 import { useAuth } from "./context/AuthContext";
 
 import PaintFlowBackground from "./components/PaintFlowBackground";
 
-import { AiCurator } from "./components/AiCurator";
+const AiCurator = lazy(() => import("./components/AiCurator").then(module => ({ default: module.AiCurator })));
+const ChatWidget = lazy(() => import("./components/Chat/ChatWidget"));
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -22,8 +23,10 @@ function AppContent() {
       <div className="relative z-10">
         <AppRoutes />
       </div>
-      <AiCurator />
-      <ChatWidget />
+      <Suspense fallback={null}>
+        <AiCurator />
+        <ChatWidget />
+      </Suspense>
     </div>
   );
 }

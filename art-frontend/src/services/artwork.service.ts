@@ -29,6 +29,10 @@ export const ArtworkService = {
     return api.get<ApiResponse>(`/artworks/search?query=${encodeURIComponent(query)}`);
   },
 
+  aiSearchArtworks: async (query: string) => {
+    return api.get<ApiResponse>(`/artworks/ai-search?q=${encodeURIComponent(query)}`);
+  },
+
   getTopRatedArt: async (limit: number = 10) => {
     return api.get<ApiResponse>(`/artworks/top-rated?limit=${limit}`);
   },

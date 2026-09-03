@@ -120,7 +120,7 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
       setOnlineUsers(new Set());
       setTypingUsers(new Map());
     }
-  }, [user]);
+  }, [user?._id]);
 
   const emitTyping = useCallback(
     (receiverId: string) => {
@@ -136,39 +136,51 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
     [socket],
   );
 
-  const openChat = (user: ChatUser) => {
+  const openChat = useCallback((user: ChatUser) => {
     setActiveChatUser(user);
     setIsOpen(true);
-  };
+  }, []);
 
-  const closeChat = () => {
+  const closeChat = useCallback(() => {
     setIsOpen(false);
-  };
+  }, []);
 
-  const toggleChat = () => {
+  const toggleChat = useCallback(() => {
     setIsOpen((prev) => !prev);
-  };
+  }, []);
 
-  const backToContacts = () => {
+  const backToContacts = useCallback(() => {
     setActiveChatUser(null);
-  };
+  }, []);
+
+  const contextValue = React.useMemo(() => ({
+    activeChatUser,
+    isOpen,
+    openChat,
+    closeChat,
+    toggleChat,
+    backToContacts,
+    socket,
+    onlineUsers,
+    typingUsers,
+    emitTyping,
+    emitStopTyping,
+  }), [
+    activeChatUser,
+    isOpen,
+    openChat,
+    closeChat,
+    toggleChat,
+    backToContacts,
+    socket,
+    onlineUsers,
+    typingUsers,
+    emitTyping,
+    emitStopTyping,
+  ]);
 
   return (
-    <ChatContext.Provider
-      value={{
-        activeChatUser,
-        isOpen,
-        openChat,
-        closeChat,
-        toggleChat,
-        backToContacts,
-        socket,
-        onlineUsers,
-        typingUsers,
-        emitTyping,
-        emitStopTyping,
-      }}
-    >
+    <ChatContext.Provider value={contextValue}>
       {children}
     </ChatContext.Provider>
   );

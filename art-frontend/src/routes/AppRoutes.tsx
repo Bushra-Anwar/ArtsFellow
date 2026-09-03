@@ -22,6 +22,7 @@ const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 const ChatPage = lazy(() => import("../pages/ChatPage"));
 const RatingsPage = lazy(() => import("../pages/RatingsPage"));
 const SearchPage = lazy(() => import("../pages/SearchPage"));
+const DiscountPage = lazy(() => import("../pages/DiscountPage"));
 
 // ─── Loading fallback ────────────────────────────────────────
 const PageLoader = () => (
@@ -116,6 +117,7 @@ const AppRoutes = () => {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/ratings" element={<RatingsPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/discount" element={<DiscountPage />} />
       </Routes>
     </Suspense>
   );

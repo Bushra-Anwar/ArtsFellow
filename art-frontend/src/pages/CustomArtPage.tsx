@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, Calendar, DollarSign, Send, CheckCircle } from "lucide-react";
+import { Upload, Calendar, DollarSign, Send, CheckCircle, WandSparkles } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +9,7 @@ const CustomArtPage: React.FC = () => {
   const navigate = useNavigate();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [generatingAI, setGeneratingAI] = useState(false);
 
   // Form State
   const [request, setRequest] = useState({
@@ -28,6 +29,33 @@ const CustomArtPage: React.FC = () => {
       const f = e.target.files[0];
       setFile(f);
       setPreview(URL.createObjectURL(f));
+    }
+  };
+
+  const handleGenerateAIPreview = async () => {
+    if (!request.description) {
+      alert("Please enter a description first!");
+      return;
+    }
+    try {
+      setGeneratingAI(true);
+      const res = await fetch("/api/generate/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}` },
+        body: JSON.stringify({ prompt: request.description }),
+      });
+      const data = await res.json();
+      if (res.ok && data.imageUrl) {
+        setPreview(data.imageUrl);
+        setFile(null); // Clear file since we are using AI preview
+      } else {
+        alert("Failed to generate image: " + (data.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error connecting to AI service.");
+    } finally {
+      setGeneratingAI(false);
     }
   };
 
@@ -190,6 +218,15 @@ const CustomArtPage: React.FC = () => {
                     setRequest({ ...request, description: e.target.value })
                   }
                 />
+                <button
+                  type="button"
+                  onClick={handleGenerateAIPreview}
+                  disabled={generatingAI}
+                  className="mt-2 text-sm text-[var(--color-primary)] font-bold flex items-center gap-1 hover:underline disabled:opacity-50"
+                >
+                  <WandSparkles size={16} />
+                  {generatingAI ? "Generating Preview..." : "Generate AI Preview"}
+                </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
