@@ -18,11 +18,14 @@ export const api = {
         method: "GET",
         headers: getHeaders(),
       });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+      }
       return await res.json();
-    } catch (error) {
+    } catch (error: any) {
       console.error(`API GET ${endpoint} failed:`, error);
-      return { status: "error", message: "Failed to connect to backend" } as any;
+      return { status: "error", message: error.message || "Failed to connect to backend", success: false } as any;
     }
   },
   post: async <T>(endpoint: string, body: any): Promise<T> => {
@@ -32,37 +35,35 @@ export const api = {
         headers: getHeaders(),
         body: JSON.stringify(body),
       });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+      }
       return await res.json();
-    } catch (error) {
+    } catch (error: any) {
       console.error(`API POST ${endpoint} failed:`, error);
-      return { status: "error", message: "Failed to connect to backend" } as any;
-    }
-  },
-  put: async <T>(endpoint: string, body: any): Promise<T> => {
-    try {
-      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: "PUT",
-        headers: getHeaders(),
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      return await res.json();
-    } catch (error) {
-      console.error(`API PUT ${endpoint} failed:`, error);
-      return { status: "error", message: "Failed to connect to backend" } as any;
+      return { status: "error", message: error.message || "Failed to connect to backend", success: false } as any;
     }
   },
   // Special handler for FormData (files)
   postFormData: async <T>(endpoint: string, formData: FormData): Promise<T> => {
-    const headers = getHeaders() as any;
-    delete headers["Content-Type"]; // Let browser set boundary
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-      method: "POST",
-      headers,
-      body: formData,
-    });
-    return res.json();
+    try {
+      const headers = getHeaders() as any;
+      delete headers["Content-Type"]; // Let browser set boundary
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: "POST",
+        headers,
+        body: formData,
+      });
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+      }
+      return await res.json();
+    } catch (error: any) {
+      console.error(`API POST FormData ${endpoint} failed:`, error);
+      return { status: "error", message: error.message || "Failed to connect to backend", success: false } as any;
+    }
   },
   delete: async <T>(endpoint: string): Promise<T> => {
     try {
@@ -70,10 +71,14 @@ export const api = {
         method: "DELETE",
         headers: getHeaders(),
       });
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+      }
       return await res.json();
-    } catch (error) {
+    } catch (error: any) {
       console.error(`API DELETE ${endpoint} failed:`, error);
-      return { status: "error", message: "Failed to connect to backend" } as any;
+      return { status: "error", message: error.message || "Failed to connect to backend", success: false } as any;
     }
   },
 };
