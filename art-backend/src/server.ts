@@ -19,8 +19,11 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: "*", // Or specify the frontend URL: "https://for-artist.vercel.app"
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  origin: function (origin, callback) {
+    // Allow any origin
+    callback(null, true);
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   credentials: true
 }));
 app.use(express.json());
