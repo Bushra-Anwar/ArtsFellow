@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Palette, ShoppingBag, Moon, Sun } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import explore1 from "../assets/images/explore_1.png";
+import explore2 from "../assets/images/explore_2.png";
+import explore3 from "../assets/images/explore_3.png";
+import explore4 from "../assets/images/explore_4.png";
 import { useNavigate } from "react-router-dom";
 import LoginTab from "../components/LoginTab";
 import Logo from "../components/Logo";
@@ -33,31 +37,31 @@ const ArtLandingPage: React.FC = () => {
   // Images for floating art (matching the uploaded image layout)
   const artPieces = [
     {
-      src: "/src/assets/images/explore_1.png",
+      src: explore1,
       top: "10%",
       left: "5%",
       width: "220px",
       delay: 0,
     },
     {
-      src: "/src/assets/images/explore_2.png",
+      src: explore2,
       top: "15%",
       right: "5%",
       width: "260px",
       delay: 0.2,
     },
     {
-      src: "/src/assets/images/explore_3.png",
-      bottom: "5%",
-      left: "15%",
+      src: explore3,
+      bottom: "15%",
+      left: "8%",
       width: "240px",
       delay: 0.4,
     },
     {
-      src: "/src/assets/images/explore_4.png",
-      top: "50%",
+      src: explore4,
+      bottom: "20%",
       right: "10%",
-      width: "260px",
+      width: "230px",
       delay: 0.6,
     },
   ];
