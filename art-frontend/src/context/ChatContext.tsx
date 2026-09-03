@@ -36,7 +36,7 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
   const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   const [typingUsers, setTypingUsers] = useState<Map<string, boolean>>(new Map());
-  const typingTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const typingTimeouts = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   useEffect(() => {
     if (user) {

@@ -40,7 +40,7 @@ const ChatWidget = () => {
   const [replyingTo, setReplyingTo] = useState<any>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
   const location = useLocation();
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // SOCKET EVENT HANDLERS

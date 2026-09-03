@@ -8,7 +8,6 @@ import {
   User,
   Package,
   Heart,
-  Star,
   LogOut,
   Camera,
   X,

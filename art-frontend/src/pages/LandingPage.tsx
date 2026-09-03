@@ -3,20 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
-import { ShoppingBag, Edit3, Check, Star, Search, User as UserIcon, AlertCircle, Play, ArrowRight } from "lucide-react";
+import { ShoppingBag, Check, Star, Search, AlertCircle, Play, ArrowRight } from "lucide-react";
 import { ArtistService } from "../services/artist.service";
 import { ArtworkService } from "../services/artwork.service";
 import { RatingService } from "../services/rating.service";
 import PaintStainsBackground from "../components/PaintStainsBackground";
 import EternalFooter from "../components/EternalFooter";
-import { useTheme } from "../context/ThemeContext";
 import { SkeletonGrid } from "../components/SkeletonLoader";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { MeshDistortMaterial } from "@react-three/drei";
 
 /* 🔥 LIQUID SHADER (distortion feel) */
 function Liquid({ color, position }: { color: string, position: [number, number, number] }) {
-  const mesh = useRef<any>();
+  const mesh = useRef<any>(null);
 
   useFrame(({ clock }) => {
     if (mesh.current) {
@@ -127,10 +126,9 @@ const getActiveFestival = () => {
 };
 
 const LandingPage: React.FC = () => {
-  const { user, role } = useAuth();
+  const { user } = useAuth();
   const { addToCart, cart, removeFromCart } = useCart();
   const navigate = useNavigate();
-  const { setTheme } = useTheme();
   const [artworks, setArtworks] = useState<any[]>([]);
   const [latestArtworks, setLatestArtworks] = useState<any[]>([]);
   const [topArtists, setTopArtists] = useState<any[]>([]);

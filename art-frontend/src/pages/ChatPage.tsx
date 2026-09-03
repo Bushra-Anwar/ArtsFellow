@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -6,7 +6,6 @@ import {
   MessageSquare,
   ArrowLeft,
   Search,
-  MoreVertical,
   Smile,
   Paperclip,
   Info,
@@ -17,27 +16,17 @@ import {
   Mail,
   Users,
   Settings,
-  Maximize2,
-  Minimize2,
   X,
   Globe,
-  Monitor,
-  Smartphone,
-  Calendar,
-  History,
-  Facebook,
-  Twitter,
-  Instagram,
-  Mic,
-  ChevronDown,
-  ChevronUp,
   ShieldAlert,
   Cpu,
   LifeBuoy,
   Image as ImageIcon,
-  FileText,
   PlusCircle,
   Sparkles,
+  ChevronUp,
+  ChevronDown,
+  FileText,
 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import EmojiPicker, { Theme } from "emoji-picker-react";
@@ -68,7 +57,7 @@ const ChatPage = () => {
   });
 
   // Typing debounce
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Theme detection
   const [isDarkMode, setIsDarkMode] = useState(() =>
@@ -753,9 +742,7 @@ const ChatPage = () => {
                   const isMe =
                     user &&
                     (msg.senderId === user._id ||
-                      msg.senderId === user.id ||
-                      msg.senderId?.toString() === user._id?.toString() ||
-                      msg.senderId?.toString() === user.id?.toString());
+                      msg.senderId?.toString() === user._id?.toString());
                   const isBot = msg.senderId === "chatbot";
                   return (
                     <div

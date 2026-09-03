@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
 import {
-  ShoppingBag,
-  CreditCard,
-  ChevronRight,
   CheckCircle,
   MapPin,
 } from "lucide-react";

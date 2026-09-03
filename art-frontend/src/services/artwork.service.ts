@@ -41,7 +41,7 @@ export const ArtworkService = {
     return api.get<ApiResponse>(`/artworks/latest?limit=${limit}`);
   },
 
-  visionSearch: async (file?: File) => {
+  visionSearch: async (_file?: File) => {
     // We send a POST request. In a real app we would use FormData to upload the file.
     // Here we just hit the endpoint.
     return api.post<ApiResponse>("/artworks/vision-search", {});

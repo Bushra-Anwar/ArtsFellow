@@ -27,7 +27,7 @@ import {
   Pause
 } from "lucide-react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useTexture } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
 import { useDashboardStore } from "../store/dashboardStore";
 import { ArtworkService } from "../services/artwork.service";
@@ -318,8 +318,8 @@ const SearchPage: React.FC = () => {
           const res = await ArtworkService.getAllArtworks({
             maxPrice: priceCap,
             categories: selectedCategories,
-            style: selectedStyle,
-            orientation: selectedOrientation,
+            style: selectedStyle || undefined,
+            orientation: selectedOrientation || undefined,
           });
           if (res.status === "ok") {
             setArtworks((res.artworks || []) as ArtworkRecord[]);
@@ -544,9 +544,10 @@ const SearchPage: React.FC = () => {
       setSelectedCategories([]);
       return;
     }
-    setSelectedCategories(prev =>
-      prev.includes(val) ? prev.filter(c => c !== val) : [...prev, val]
-    );
+    const newCategories = selectedCategories.includes(val) 
+      ? selectedCategories.filter(c => c !== val) 
+      : [...selectedCategories, val];
+    setSelectedCategories(newCategories);
   };
 
   const renderFilterChips = (
@@ -1170,7 +1171,7 @@ const SearchPage: React.FC = () => {
                   key: "style" as const,
                   title: "Style",
                   icon: Sparkles,
-                  content: renderFilterChips(styles, selectedStyle, setSelectedStyle),
+                  content: renderFilterChips(styles, selectedStyle || "All", setSelectedStyle),
                 },
                 {
                   key: "orientation" as const,
@@ -1178,7 +1179,7 @@ const SearchPage: React.FC = () => {
                   icon: Frame,
                   content: renderFilterChips(
                     orientationLabels,
-                    selectedOrientation,
+                    selectedOrientation || "All",
                     (value) => setSelectedOrientation(value as OrientationOption),
                   ),
                 },

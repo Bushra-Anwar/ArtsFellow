@@ -2,10 +2,10 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import {
-  Search, Palette, ShieldCheck, Truck, Heart,
-  ChevronRight, ArrowRight, Star, Globe, Users,
-  Layers, Sliders, Menu, X, ShoppingBag,
-  Upload, Download, Wand2, RefreshCw, Printer
+  ChevronRight, ArrowRight, Globe, Users,
+  Layers, Sliders, ShoppingBag,
+  Upload, Download, Wand2, RefreshCw, Printer,
+  Palette, Truck, Search, Heart
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -68,16 +68,6 @@ function quantizeColors(imageData: ImageData, numColors: number): ColorSwatch[] 
     r: c.r, g: c.g, b: c.b,
     name: getColorName(c.r, c.g, c.b)
   }));
-}
-
-function isEdge(quantized: Uint8Array, x: number, y: number, width: number, height: number): boolean {
-  const qi = y * width + x;
-  const val = quantized[qi];
-  if (x > 0 && quantized[qi - 1] !== val) return true;
-  if (x < width - 1 && quantized[qi + 1] !== val) return true;
-  if (y > 0 && quantized[qi - width] !== val) return true;
-  if (y < height - 1 && quantized[qi + width] !== val) return true;
-  return false;
 }
 
 function generateOutlineCanvas(
@@ -184,29 +174,10 @@ function generateOutlineCanvas(
 }
 
 // --- Types & Interfaces ---
-interface ArtworkCard {
-  id: string;
-  title: string;
-  artist: string;
-  price: string;
-  category: string;
-  image: string;
-  likes: number;
-}
-
-interface ArtistCard {
-  id: string;
-  name: string;
-  country: string;
-  style: string;
-  followers: string;
-  avatar: string;
-}
-
 export default function DiscountPage() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory] = useState('All');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [likedItems, setLikedItems] = useState<Record<string, boolean>>({});
 
