@@ -127,7 +127,7 @@ const ChatWidget = () => {
       if (!user || !activeChatUser) return;
       try {
         const token = localStorage.getItem("art_token");
-        const res = await fetch(`/api/chat/history/${activeChatUser.id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/chat/history/${activeChatUser.id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -153,7 +153,7 @@ const ChatWidget = () => {
     if (!user) return;
     try {
       const token = localStorage.getItem("art_token");
-      const res = await fetch("/api/chat/contacts", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/chat/contacts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

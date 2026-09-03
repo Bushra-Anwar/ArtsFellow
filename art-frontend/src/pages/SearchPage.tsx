@@ -157,9 +157,9 @@ const normalizeImage = (art: ArtworkRecord) => {
   if (!image) return "/art_feature_image.png";
   if (image.startsWith("http")) return image;
   if (image.includes("/assets") || image.startsWith("/")) {
-    return image.startsWith("/") ? `http://localhost:5005${image}` : image;
+    return image.startsWith("/") ? `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${image}` : image;
   }
-  return `http://localhost:5005/${image}`;
+  return `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}/${image}`;
 };
 
 const inferStyle = (art: ArtworkRecord) => {

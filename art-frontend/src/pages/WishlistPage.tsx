@@ -100,7 +100,7 @@ const WishlistPage: React.FC = () => {
                         art.images?.[0]?.startsWith("http") ||
                           art.images?.[0]?.includes("/assets")
                           ? art.images[0]
-                          : `http://localhost:5005${art.images?.[0]}`
+                          : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`
                       }
                       alt={art.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"

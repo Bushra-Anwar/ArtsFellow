@@ -12,7 +12,7 @@ const ArtistsPage: React.FC = () => {
   useEffect(() => {
     const fetchArtists = async () => {
       try {
-        const res = await fetch("/api/artist");
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist`);
         const data = await res.json();
         if (data.status === "ok") {
           setArtists(data.artists);

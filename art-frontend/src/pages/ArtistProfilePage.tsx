@@ -70,8 +70,8 @@ const ArtistProfilePage: React.FC = () => {
     const fetchData = async () => {
       try {
         const [artistRes, worksRes] = await Promise.all([
-          fetch(`/api/artist/${id}`),
-          fetch(`/api/artist/${id}/artworks`),
+          fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist/${id}`),
+          fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist/${id}/artworks`),
         ]);
 
         if (artistRes.ok) {
@@ -108,7 +108,7 @@ const ArtistProfilePage: React.FC = () => {
       setIsFollowing(newIsFollowing);
       setFollowersCount((prev) => (newIsFollowing ? prev + 1 : prev - 1));
 
-      const response = await fetch("/api/artist/follow", {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist/follow`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -358,7 +358,7 @@ const ArtistProfilePage: React.FC = () => {
                 {/* Image with overlaid price badge and wishlist button */}
                 <div className="relative overflow-hidden aspect-[4/5] bg-gray-100 dark:bg-gray-800">
                   <img
-                    src={art.images[0]?.startsWith("http") ? art.images[0] : `http://localhost:5005${art.images[0]}`}
+                    src={art.images[0]?.startsWith("http") ? art.images[0] : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images[0]}`}
                     alt={art.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -419,7 +419,7 @@ const ArtistProfilePage: React.FC = () => {
                           e.stopPropagation();
                           if (window.confirm("Delete this artwork?")) {
                             try {
-                              const res = await fetch(`/api/artworks/${art._id}`, {
+                              const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artworks/${art._id}`, {
                                 method: 'DELETE',
                                 headers: {
                                   'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -11,7 +11,7 @@ const normalizeImage = (art: any) => {
   const image = art.images?.[0];
   if (!image) return "/art_feature_image.png";
   if (image.startsWith("http")) return image;
-  return image.startsWith("/") ? `http://localhost:5005${image}` : `http://localhost:5005/${image}`;
+  return image.startsWith("/") ? `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${image}` : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}/${image}`;
 };
 
 export default function Hero() {

@@ -42,7 +42,7 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
     if (user) {
       const token = localStorage.getItem("art_token");
       const apiUrl =
-        (import.meta.env.VITE_API_BASE_URL || "").replace("/api", "") ||
+        (import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") ||
         "http://localhost:5005";
 
       const newSocket = io(apiUrl, {

@@ -47,7 +47,7 @@ const ProfilePage = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch("/api/orders/my-orders", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/orders/my-orders`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("art_token")}`,
         },
@@ -196,7 +196,7 @@ const ProfilePage = () => {
     formData.append("file", file);
 
     try {
-      const uploadRes = await fetch("/api/upload", {
+      const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -230,7 +230,7 @@ const ProfilePage = () => {
         {/* Banner Background */}
         <div className="h-48 md:h-64 rounded-3xl bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900 overflow-hidden shadow-lg relative">
           {recentRatedArtwork && (
-            <img src={recentRatedArtwork.startsWith("http") ? recentRatedArtwork : `http://localhost:5005${recentRatedArtwork}`} alt="Banner" className="w-full h-full object-cover rounded-3xl absolute inset-0" />
+            <img src={recentRatedArtwork.startsWith("http") ? recentRatedArtwork : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${recentRatedArtwork}`} alt="Banner" className="w-full h-full object-cover rounded-3xl absolute inset-0" />
           )}
           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>

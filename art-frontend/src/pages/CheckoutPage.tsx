@@ -97,7 +97,7 @@ const CheckoutPage: React.FC = () => {
     const shippingAddress = user?.addresses[selectedAddress || 0];
 
     try {
-      const res = await fetch("/api/orders", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

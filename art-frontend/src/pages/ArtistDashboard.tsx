@@ -111,7 +111,7 @@ const ArtistDashboard: React.FC = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const res = await fetch("/api/upload", {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/upload`, {
           method: "POST",
           body: formData,
         });
@@ -184,7 +184,7 @@ const ArtistDashboard: React.FC = () => {
   const fetchRequests = async () => {
     try {
       setIsLoadingRequests(true);
-      const res = await fetch(`/api/custom-requests/artist/${user!._id}`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/custom-requests/artist/${user!._id}`);
       const data = await res.json();
       if (data.status === "ok") {
         setCustomRequests(data.requests);
@@ -213,7 +213,7 @@ const ArtistDashboard: React.FC = () => {
     }
 
     try {
-      const res = await fetch(`/api/custom-requests/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/custom-requests/${id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -369,7 +369,7 @@ const ArtistDashboard: React.FC = () => {
       formData.append("file", selectedFile);
 
       // 1. Upload File
-      const uploadRes = await fetch("/api/upload", {
+      const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/upload`, {
         method: "POST",
         body: formData,
       });
@@ -399,7 +399,7 @@ const ArtistDashboard: React.FC = () => {
         deliveryType: "physical",
       };
 
-      const createRes = await fetch("/api/artist/artworks", {
+      const createRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist/artworks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(artworkData),
@@ -435,7 +435,7 @@ const ArtistDashboard: React.FC = () => {
       return;
 
     try {
-      const res = await fetch("/api/artist/portfolio/delete", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist/portfolio/delete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: user?.email, imageUrl: imgUrl }),
@@ -473,14 +473,14 @@ const ArtistDashboard: React.FC = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const uploadRes = await fetch("/api/upload", {
+        const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/upload`, {
           method: "POST",
           body: formData,
         });
         const uploadData = await uploadRes.json();
         if (!uploadRes.ok) throw new Error(uploadData.message);
 
-        const addRes = await fetch("/api/artist/portfolio/add", {
+        const addRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artist/portfolio/add`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: user.email, imageUrl: uploadData.url }),
@@ -508,7 +508,7 @@ const ArtistDashboard: React.FC = () => {
 
   const handleSupport = async () => {
     try {
-      const res = await fetch("/api/auth/admin-contact");
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/admin-contact`);
       const data = await res.json();
       if (data.status === "ok") {
         // Navigate to chat page instead of opening sidebar
@@ -1213,7 +1213,7 @@ const ArtistDashboard: React.FC = () => {
                               art.images?.[0]?.startsWith("http") ||
                               art.images?.[0]?.includes("/assets")
                                 ? art.images[0]
-                                : `http://localhost:5005${art.images?.[0]}`
+                                : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`
                             }
                             alt={art.title}
                             className="w-full h-full object-cover"

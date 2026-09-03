@@ -160,7 +160,7 @@ const ChatPage = () => {
       try {
         const token = localStorage.getItem("art_token");
         const id = activeChatUser.id || activeChatUser._id;
-        const res = await fetch(`/api/chat/history/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/chat/history/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.status === 401) {
@@ -191,7 +191,7 @@ const ChatPage = () => {
     if (!user) return;
     try {
       const token = localStorage.getItem("art_token");
-      const res = await fetch("/api/chat/contacts", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/chat/contacts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.status === 401) {
@@ -273,7 +273,7 @@ const ChatPage = () => {
     // ── Send via HTTP POST ───────────
     try {
       const token = localStorage.getItem("art_token");
-      const res = await fetch("/api/chat/send", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/chat/send`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -332,7 +332,7 @@ const ChatPage = () => {
 
     try {
       const token = localStorage.getItem("art_token");
-      const res = await fetch("/api/upload", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,

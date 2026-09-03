@@ -39,7 +39,7 @@ const CustomArtPage: React.FC = () => {
     }
     try {
       setGeneratingAI(true);
-      const res = await fetch("/api/generate/image", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/generate/image`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}` },
         body: JSON.stringify({ prompt: request.description }),
@@ -75,7 +75,7 @@ const CustomArtPage: React.FC = () => {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        const uploadRes = await fetch("/api/upload", {
+        const uploadRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/upload`, {
           method: "POST",
           body: formData,
         });
@@ -84,7 +84,7 @@ const CustomArtPage: React.FC = () => {
       }
 
       // Submit Request
-      const res = await fetch("/api/custom-requests", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/custom-requests`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

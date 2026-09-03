@@ -48,7 +48,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchAllArtworks = async () => {
     try {
-      const res = await fetch("/api/artworks");
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artworks`);
       const data = await res.json();
       if (data.status === "ok") {
         // Sort by downloads priority
@@ -70,7 +70,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch("/api/admin/stats");
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/admin/stats`);
       const data = await res.json();
       if (data.status === "ok") setStats(data.stats);
     } catch (e) {
@@ -80,7 +80,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchArtists = async (status: string) => {
     try {
-      const res = await fetch(`/api/admin/artists?status=${status}`);
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/admin/artists?status=${status}`);
       const data = await res.json();
       if (data.status === "ok") setArtists(data.artists);
     } catch (e) {
@@ -115,7 +115,7 @@ const AdminDashboard: React.FC = () => {
     );
 
     try {
-      const res = await fetch("/api/admin/verify-artist", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/admin/verify-artist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ artistId, action }),
@@ -428,7 +428,7 @@ const AdminDashboard: React.FC = () => {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <img src={art.images?.[0]?.startsWith("http") ? art.images[0] : `http://localhost:5005${art.images?.[0]}`} className="w-12 h-12 object-cover rounded-md" alt={art.title} />
+                          <img src={art.images?.[0]?.startsWith("http") ? art.images[0] : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`} className="w-12 h-12 object-cover rounded-md" alt={art.title} />
                           <div>
                             <p className="font-bold text-gray-800 dark:text-white">{art.title}</p>
                             <p className="text-xs">{art.category}</p>

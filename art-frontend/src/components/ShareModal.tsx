@@ -46,7 +46,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
     ? artwork.images[0].startsWith("http") ||
       artwork.images[0].includes("/assets")
       ? artwork.images[0]
-      : `http://localhost:5005${artwork.images[0]}`
+      : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${artwork.images[0]}`
     : "";
 
   const handleCopyLink = async () => {

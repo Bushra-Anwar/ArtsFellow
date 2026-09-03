@@ -87,7 +87,7 @@ const ArtworkDetailPage: React.FC = () => {
       try {
         // We'll reuse the backend's getArtworksByIds or create a new endpoint for single artwork.
         // Since getArtworksByIds expects an array, we can use that for now.
-        const response = await fetch("/api/artworks/batch", {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artworks/batch`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ids: [id] }),
@@ -101,7 +101,7 @@ const ArtworkDetailPage: React.FC = () => {
           setSelectedImage(
             initialImage.startsWith("http") || initialImage.includes("/assets")
               ? initialImage
-              : `http://localhost:5005${initialImage}`,
+              : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${initialImage}`,
           );
 
           if (art.variants && art.variants.length > 0) {
@@ -256,7 +256,7 @@ const ArtworkDetailPage: React.FC = () => {
                 const imgUrl =
                   img.startsWith("http") || img.includes("/assets")
                     ? img
-                    : `http://localhost:5005${img}`;
+                    : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${img}`;
                 return (
                   <button
                     key={idx}

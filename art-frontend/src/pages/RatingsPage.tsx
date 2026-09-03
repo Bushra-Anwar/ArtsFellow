@@ -65,7 +65,7 @@ const RatingsPage: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gray-200 dark:bg-slate-700 rounded-lg flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
                     {item.imageUrl ? (
-                      <img src={item.imageUrl.startsWith("http") ? item.imageUrl : `http://localhost:5005${item.imageUrl}`} alt={item.artworkName} className="w-full h-full object-cover" />
+                      <img src={item.imageUrl.startsWith("http") ? item.imageUrl : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${item.imageUrl}`} alt={item.artworkName} className="w-full h-full object-cover" />
                     ) : (
                       <ImageIcon size={20} className="text-gray-400" />
                     )}

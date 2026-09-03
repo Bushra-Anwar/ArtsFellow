@@ -271,7 +271,7 @@ const LandingPage: React.FC = () => {
             className="hidden lg:flex absolute left-10 top-[35%] z-40 bg-white/60 dark:bg-gray-800/80 backdrop-blur-3xl border border-white dark:border-gray-700 shadow-[0_20px_40px_rgba(0,0,0,0.05)] rounded-3xl overflow-hidden w-[220px] flex-col items-center cursor-pointer group"
           >
             <div className="w-full h-[120px] bg-slate-100 overflow-hidden relative">
-               <img src={artworks[2].images?.[0]?.startsWith('http') ? artworks[2].images[0] : (artworks[2].images?.[0] ? `http://localhost:5005${artworks[2].images[0]}` : '')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Left floating art" />
+               <img src={artworks[2].images?.[0]?.startsWith('http') ? artworks[2].images[0] : (artworks[2].images?.[0] ? `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${artworks[2].images[0]}` : '')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Left floating art" />
                <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
                  <span className="text-[10px]">✦</span>
                </div>
@@ -326,7 +326,7 @@ const LandingPage: React.FC = () => {
           className="hidden lg:flex absolute right-10 top-[40%] z-40 bg-white/60 dark:bg-gray-800/80 backdrop-blur-3xl border border-white dark:border-gray-700 shadow-[0_20px_40px_rgba(0,0,0,0.05)] rounded-3xl overflow-hidden w-[220px] flex-col items-center cursor-pointer group"
         >
             <div className="w-full h-[120px] bg-slate-100 overflow-hidden relative">
-               <img src={artworks[3].images?.[0]?.startsWith('http') ? artworks[3].images[0] : (artworks[3].images?.[0] ? `http://localhost:5005${artworks[3].images[0]}` : '')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Right floating art" />
+               <img src={artworks[3].images?.[0]?.startsWith('http') ? artworks[3].images[0] : (artworks[3].images?.[0] ? `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${artworks[3].images[0]}` : '')} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Right floating art" />
                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center shadow-lg">
                  <Play size={10} className="ml-0.5 text-teal-600" fill="currentColor" />
                </div>
@@ -426,7 +426,7 @@ const LandingPage: React.FC = () => {
               {[...(artworks.length > 0 ? artworks : [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]), ...(artworks.length > 0 ? artworks : [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }])].map((art, i) => {
                 const imgUrl = art.images?.[0]?.startsWith('http')
                   ? art.images[0]
-                  : (art.images?.[0] ? `http://localhost:5005${art.images?.[0]}` : `https://picsum.photos/300/400?${i}`);
+                  : (art.images?.[0] ? `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}` : `https://picsum.photos/300/400?${i}`);
 
                 return (
                   <motion.div
@@ -678,7 +678,7 @@ const LandingPage: React.FC = () => {
                     art.images?.[0]?.startsWith("http") ||
                       art.images?.[0]?.includes("/assets")
                       ? art.images[0]
-                      : `http://localhost:5005${art.images?.[0]}`
+                      : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`
                   }
                   alt={art.title}
                   loading="lazy"
@@ -839,7 +839,7 @@ const LandingPage: React.FC = () => {
                             e.stopPropagation();
                             if (window.confirm("Delete this artwork permanently?")) {
                               try {
-                                const res = await fetch(`/api/artworks/${art._id}`, {
+                                const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || '/api'}/artworks/${art._id}`, {
                                   method: 'DELETE',
                                   headers: {
                                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -902,7 +902,7 @@ const LandingPage: React.FC = () => {
                   src={
                     art.images?.[0]?.startsWith("http") || art.images?.[0]?.includes("/assets")
                       ? art.images[0]
-                      : `http://localhost:5005${art.images?.[0]}`
+                      : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`
                   }
                   alt={art.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -964,7 +964,7 @@ const LandingPage: React.FC = () => {
             >
               <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-[#041116] shadow-md mb-4 group-hover:scale-105 transition-transform">
                 {artist.profileImage ? (
-                  <img src={artist.profileImage.startsWith('http') ? artist.profileImage : `http://localhost:5005${artist.profileImage}`} alt={artist.brandName} className="w-full h-full object-cover" />
+                  <img src={artist.profileImage.startsWith('http') ? artist.profileImage : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${artist.profileImage}`} alt={artist.brandName} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-[var(--color-primary)] to-slate-800 flex items-center justify-center text-white text-3xl font-black">
                     {(artist.brandName || artist.name || "A")[0]}
@@ -993,7 +993,7 @@ const LandingPage: React.FC = () => {
                     {artist.artworks.slice(0, 3).map((art: any, j: number) => (
                       <div key={art._id || j} className="w-16 h-16 rounded-lg overflow-hidden border border-[var(--color-primary)]/20 group-hover:border-[var(--color-primary)]/50 transition-colors">
                         <img
-                          src={art.images?.[0]?.startsWith("http") || art.images?.[0]?.includes("/assets") ? art.images[0] : `http://localhost:5005${art.images?.[0]}`}
+                          src={art.images?.[0]?.startsWith("http") || art.images?.[0]?.includes("/assets") ? art.images[0] : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`}
                           alt="Artwork"
                           className="w-full h-full object-cover"
                         />
@@ -1121,7 +1121,7 @@ const LandingPage: React.FC = () => {
                 >
                   <div className="aspect-square rounded-3xl overflow-hidden shadow-lg border border-slate-100 dark:border-white/5 bg-white dark:bg-white/5">
                     <img
-                      src={art.images?.[0]?.startsWith('http') ? art.images[0] : (art.images?.[0]?.includes("/assets") ? art.images[0] : `http://localhost:5005${art.images?.[0]}`)}
+                      src={art.images?.[0]?.startsWith('http') ? art.images[0] : (art.images?.[0]?.includes("/assets") ? art.images[0] : `${(import.meta.env.VITE_API_BASE_URL || "").replace(/\/api$/, "") || "http://localhost:5005"}${art.images?.[0]}`)}
                       alt={art.title}
                       loading="lazy"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
